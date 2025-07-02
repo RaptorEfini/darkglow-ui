@@ -19,3 +19,20 @@
 h1,h2,h3,h4,h5,h6 {
     font-family: "Orbitron", Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
+
+.button-container {
+    margin: 2rem auto;
+    max-width: 800px;
+    padding: 1rem;
+    background-color: #111;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.button-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1rem;
+    justify-content: center;
+}
