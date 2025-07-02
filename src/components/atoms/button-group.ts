@@ -61,22 +61,10 @@ class ButtonGroupComponent extends HTMLElement {
           ? `align-items: ${justifyContent};` 
           : `justify-content: ${justifyContent};`}
         padding: var(--spacing-xs);
-        background: rgba(255, 0, 255, 0.05);
+        background: rgba(13, 2, 33, 0.7);
         border-radius: var(--border-radius);
         position: relative;
-      }
-
-      .button-group::after {
-        content: "";
-        position: absolute;
-        top: -1px;
-        left: -1px;
-        right: -1px;
-        bottom: -1px;
-        border-radius: calc(var(--border-radius) + 1px);
-        background: linear-gradient(45deg, var(--color-primary), var(--color-secondary));
-        z-index: -1;
-        opacity: 0.3;
+        backdrop-filter: blur(5px);
       }
 
       /* When horizontal, allow wrapping on small screens */

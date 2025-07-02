@@ -53,24 +53,66 @@ class ButtonComponent extends HTMLElement {
       }
 
       .button {
-        font-family: "Raleway", sans-serif;
+        font-family: "Orbitron", sans-serif;
         padding: var(--spacing-xs) var(--spacing-sm);
-        border: none;
-        border-radius: var(--border-radius);
+        border: 2px solid transparent;
+        border-radius: 0;
         cursor: pointer;
         font-size: 16px;
         transition: all 0.3s ease;
         outline: none;
+        position: relative;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
+        background-color: var(--color-darker);
+        box-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+        overflow: hidden;
+      }
+
+      .button::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, transparent 25%, rgba(255, 255, 255, 0.1) 50%, transparent 75%);
+        background-size: 200% 200%;
+        animation: shimmer 2s infinite linear;
+        z-index: 1;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      @keyframes shimmer {
+        0% { background-position: -200% 0; }
+        100% { background-position: 200% 0; }
       }
 
       .button:hover:not(:disabled) {
-        transform: translateY(-2px);
-        box-shadow: var(--shadow-sm);
+        transform: translateY(-2px) scale(1.05);
+        box-shadow: 0 0 15px var(--color-primary);
+      }
+
+      .button:hover:not(:disabled)::before {
+        opacity: 1;
       }
 
       .button:active:not(:disabled) {
-        transform: translateY(0);
-        box-shadow: var(--shadow-sm);
+        transform: translateY(0) scale(0.98);
+        box-shadow: 0 0 5px var(--color-primary);
+      }
+
+      .button::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, var(--color-primary), transparent);
+        animation: neon-border 2s linear infinite;
       }
 
       .button:disabled {
@@ -79,24 +121,62 @@ class ButtonComponent extends HTMLElement {
       }
 
       .primary {
-        background-color: var(--color-primary);
-        color: var(--color-white);
+        background-color: var(--color-darker);
+        color: var(--color-primary);
+        border: 2px solid var(--color-primary);
+        box-shadow: 0 0 10px var(--color-primary);
+      }
+
+      .primary:hover:not(:disabled) {
+        box-shadow: 0 0 15px var(--color-primary), inset 0 0 10px var(--color-primary);
+        text-shadow: 0 0 5px var(--color-primary);
       }
 
       .secondary {
-        background-color: var(--color-secondary);
-        color: var(--color-white);
+        background-color: var(--color-darker);
+        color: var(--color-secondary);
+        border: 2px solid var(--color-secondary);
+        box-shadow: 0 0 10px var(--color-secondary);
+      }
+
+      .secondary:hover:not(:disabled) {
+        box-shadow: 0 0 15px var(--color-secondary), inset 0 0 10px var(--color-secondary);
+        text-shadow: 0 0 5px var(--color-secondary);
+      }
+
+      .secondary::after {
+        background: linear-gradient(90deg, transparent, var(--color-secondary), transparent);
       }
 
       .danger {
-        background-color: var(--color-danger);
-        color: var(--color-white);
+        background-color: var(--color-darker);
+        color: var(--color-danger);
+        border: 2px solid var(--color-danger);
+        box-shadow: 0 0 10px var(--color-danger);
+      }
+
+      .danger:hover:not(:disabled) {
+        box-shadow: 0 0 15px var(--color-danger), inset 0 0 10px var(--color-danger);
+        text-shadow: 0 0 5px var(--color-danger);
+      }
+
+      .danger::after {
+        background: linear-gradient(90deg, transparent, var(--color-danger), transparent);
       }
 
       .ghost {
         background-color: transparent;
+        color: var(--color-white);
+        border: 2px solid var(--color-white);
+        box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+      }
+
+      .ghost:hover:not(:disabled) {
         color: var(--color-primary);
-        border: 1px solid var(--color-primary);
+        border-color: var(--color-primary);
+        box-shadow: 0 0 10px var(--color-primary);
+        text-shadow: 0 0 5px var(--color-primary);
       }
     `;
 

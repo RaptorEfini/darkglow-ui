@@ -42,7 +42,28 @@ class CardComponent extends HTMLElement {
         position: relative;
         overflow: hidden;
         backdrop-filter: blur(5px);
+        border: 1px solid var(--color-primary);
         ${this.elevated ? 'box-shadow: var(--shadow-lg);' : 'box-shadow: var(--shadow-sm);'}
+      }
+
+      .card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--color-primary), transparent);
+        animation: neon-border 2s linear infinite;
+      }
+
+      @keyframes neon-border {
+        0% {
+          transform: translateX(-100%);
+        }
+        100% {
+          transform: translateX(100%);
+        }
       }
 
       .card:hover {
