@@ -1,0 +1,21 @@
+@font-face {
+    font-family: "Orbitron";
+    src: url("fonts/Orbitron/Orbitron-VariableFont_wght.ttf");
+}
+
+@font-face {
+    font-family: "Raleway";
+    src: url("fonts/Raleway/Raleway-VariableFont_wght.ttf");
+}
+
+:root {
+    font-family: "Raleway", Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.87);
+    background-color: #000000;
+    text-align: center;
+}
+
+h1,h2,h3,h4,h5,h6 {
+    font-family: "Orbitron", Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
