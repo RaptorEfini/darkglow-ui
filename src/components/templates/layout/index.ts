@@ -1,4 +1,4 @@
-import styles from './layout/styles.css?inline';
+import styles from './styles.css?inline';
 
 class LayoutComponent extends HTMLElement {
   static get observedAttributes() {

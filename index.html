@@ -12,9 +12,8 @@
   <div slot="header">
     Jeder
   </div>
-
-  <h1>Título</h1>
-  <div class="button-container">
+  <h1>Darkglow UI</h1>
+  <darkglow-container>
     <h2>Botones</h2>
     <div class="button-row">
       <darkglow-button>Primary</darkglow-button>
@@ -23,8 +22,47 @@
       <darkglow-button variant="ghost">Ghost</darkglow-button>
       <darkglow-button disabled>Disabled</darkglow-button>
     </div>
-  </div>
-
+    <h2>Horizontal (Default)</h2>
+    <darkglow-button-group>
+      <darkglow-button>Primary</darkglow-button>
+      <darkglow-button variant="secondary">Secondary</darkglow-button>
+      <darkglow-button variant="danger">Danger</darkglow-button>
+      <darkglow-button variant="ghost">Ghost</darkglow-button>
+    </darkglow-button-group>
+    <h2>Horizontal (Left Aligned)</h2>
+    <darkglow-button-group align="start">
+      <darkglow-button>Primary</darkglow-button>
+      <darkglow-button variant="secondary">Secondary</darkglow-button>
+      <darkglow-button variant="danger">Danger</darkglow-button>
+    </darkglow-button-group>
+    <h2>Horizontal (Right Aligned)</h2>
+    <darkglow-button-group align="end">
+      <darkglow-button>Primary</darkglow-button>
+      <darkglow-button variant="secondary">Secondary</darkglow-button>
+      <darkglow-button variant="danger">Danger</darkglow-button>
+    </darkglow-button-group>
+    <h2>Vertical</h2>
+    <darkglow-button-group orientation="vertical">
+      <darkglow-button>Primary</darkglow-button>
+      <darkglow-button variant="secondary">Secondary</darkglow-button>
+      <darkglow-button variant="danger">Danger</darkglow-button>
+      <darkglow-button variant="ghost">Ghost</darkglow-button>
+    </darkglow-button-group>
+    <h2>Vertical (Left Aligned)</h2>
+    <darkglow-button-group orientation="vertical" align="start">
+      <darkglow-button>Primary</darkglow-button>
+      <darkglow-button variant="secondary">Secondary</darkglow-button>
+      <darkglow-button variant="danger">Danger</darkglow-button>
+    </darkglow-button-group>
+  </darkglow-container>
+  <darkglow-container>
+    <h2>Akai Elements</h2>
+    <div class="button-row">
+      <darkglow-button>Primary</darkglow-button>
+      <darkglow-button variant="danger">Danger</darkglow-button>
+      <darkglow-button variant="ghost">Ghost</darkglow-button>
+    </div>
+  </darkglow-container>
   <div slot="footer">
     Futer
   </div>
