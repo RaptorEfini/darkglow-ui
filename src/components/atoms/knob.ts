@@ -23,12 +23,12 @@ class KnobComponent extends HTMLElement {
     this._knobElement = this.shadowRoot?.querySelector('.knob') as HTMLElement;
     this._indicatorElement = this.shadowRoot?.querySelector('.indicator') as HTMLElement;
     this._valueDisplay = this.shadowRoot?.querySelector('.value-display') as HTMLElement;
-    
+
     this.addEventListener('mousedown', this.handleMouseDown);
     document.addEventListener('mousemove', this.handleMouseMove);
     document.addEventListener('mouseup', this.handleMouseUp);
     this.addEventListener('wheel', this.handleWheel);
-    
+
     this.updateKnobPosition();
   }
 
@@ -108,22 +108,22 @@ class KnobComponent extends HTMLElement {
 
   handleMouseDown = (e: MouseEvent) => {
     if (this.disabled) return;
-    
+
     this._isDragging = true;
     this._startY = e.clientY;
     this._knobElement?.classList.add('active');
-    
+
     // Prevent text selection during dragging
     e.preventDefault();
   }
 
   handleMouseMove = (e: MouseEvent) => {
     if (!this._isDragging) return;
-    
+
     const deltaY = this._startY - e.clientY;
     const range = this._max - this._min;
     const valueChange = deltaY * this._sensitivity * (range / 100);
-    
+
     this.value = this._value + valueChange;
     this._startY = e.clientY;
   }
@@ -137,7 +137,7 @@ class KnobComponent extends HTMLElement {
 
   handleWheel = (e: WheelEvent) => {
     if (this.disabled) return;
-    
+
     e.preventDefault();
     const direction = e.deltaY > 0 ? -1 : 1;
     const step = (this._max - this._min) / 100;
@@ -146,10 +146,10 @@ class KnobComponent extends HTMLElement {
 
   updateKnobPosition() {
     if (!this._indicatorElement || !this._valueDisplay) return;
-    
+
     const percentage = ((this._value - this._min) / (this._max - this._min)) * 100;
     const degrees = percentage * 2.7; // 270 degrees rotation range
-    
+
     this._indicatorElement.style.transform = `rotate(${degrees}deg)`;
     this._valueDisplay.textContent = Math.round(this._value).toString();
   }
@@ -178,6 +178,8 @@ class KnobComponent extends HTMLElement {
         position: relative;
         width: var(--knob-size);
         height: var(--knob-size);
+        overflow: hidden;
+        border-radius: 50%;
       }
 
       .knob {
@@ -290,6 +292,9 @@ class KnobComponent extends HTMLElement {
         top: 0;
         left: 0;
         z-index: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
 
       .tick {
@@ -297,7 +302,9 @@ class KnobComponent extends HTMLElement {
         width: 2px;
         height: 6px;
         background-color: rgba(255, 255, 255, 0.3);
-        transform-origin: center 100%;
+        transform-origin: bottom center;
+        top: 0;
+        left: calc(50% - 1px);
       }
 
       .tick.major {
@@ -313,9 +320,10 @@ class KnobComponent extends HTMLElement {
     for (let i = 0; i < 28; i++) {
       const angle = i * (270 / 27);
       const isMajor = i % 9 === 0;
+      const radius = 'calc(var(--knob-size) / 2 - 4px)'; // Smaller to stay within the knob border
       ticksHtml += `
         <div class="tick ${isMajor ? 'major' : ''}" 
-             style="transform: rotate(${angle}deg) translateX(${this.disabled ? '39px' : '39px'}) translateY(0px)">
+             style="transform: rotate(${angle}deg) translateY(-${radius});">
         </div>
       `;
     }
@@ -325,8 +333,8 @@ class KnobComponent extends HTMLElement {
       <style>${styles}</style>
       <div class="knob-container">
         <div class="knob-wrapper">
-          ${ticksHtml}
           <div class="knob ${this.variant} ${this.disabled ? 'disabled' : ''}">
+            ${ticksHtml}
             <div class="indicator"></div>
           </div>
         </div>
@@ -339,7 +347,7 @@ class KnobComponent extends HTMLElement {
     this._knobElement = this.shadowRoot.querySelector('.knob');
     this._indicatorElement = this.shadowRoot.querySelector('.indicator');
     this._valueDisplay = this.shadowRoot.querySelector('.value-display');
-    
+
     // Update knob position
     this.updateKnobPosition();
   }
