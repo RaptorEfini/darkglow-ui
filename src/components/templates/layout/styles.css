@@ -8,30 +8,30 @@
 
 header {
     height: 60px;
-    background-color: #111;
-    color: white;
+    background-color: var(--color-dark);
+    color: var(--color-white);
     display: flex;
     align-items: center;
-    padding: 0 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    padding: 0 var(--spacing-sm);
+    box-shadow: var(--shadow-sm);
     overflow: auto;
 }
 
 main {
     flex: 1;
     overflow: auto;
-    padding: 20px;
+    padding: var(--spacing-sm);
 }
 
 footer {
     height: 40px;
-    background-color: #111;
-    color: white;
+    background-color: var(--color-dark);
+    color: var(--color-white);
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 20px;
-    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.3);
+    padding: 0 var(--spacing-sm);
+    box-shadow: var(--shadow-up);
     overflow: auto;
 }
 

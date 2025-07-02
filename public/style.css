@@ -21,10 +21,41 @@ html, body {
 }
 
 :root {
+    /* Colors */
+    --color-black: #000000;
+    --color-dark: #111111;
+    --color-darker: #1a1a1a;
+    --color-gray-dark: #333333;
+    --color-white: #ffffff;
+    --color-white-muted: rgba(255, 255, 255, 0.87);
+    --color-gray-light: #cccccc;
+
+    /* Brand Colors */
+    --color-primary: #3498db;
+    --color-secondary: #2ecc71;
+    --color-danger: #e74c3c;
+
+    /* Spacing */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 1.5rem;
+    --spacing-lg: 2rem;
+
+    /* Border Radius */
+    --border-radius: 8px;
+
+    /* Shadows */
+    --shadow-sm: 0 4px 8px rgba(0, 0, 0, 0.2);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.4);
+    --shadow-xl: 0 12px 24px rgba(0, 0, 0, 0.5);
+    --shadow-up: 0 -2px 4px rgba(0, 0, 0, 0.3);
+
+    /* Base styles */
     font-family: "Raleway", Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
     font-weight: 300;
-    color: rgba(255, 255, 255, 0.87);
-    background-color: #000000;
+    color: var(--color-white-muted);
+    background-color: var(--color-black);
     text-align: center;
 }
 
@@ -33,19 +64,19 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .button-container {
-    margin: 2rem auto;
+    margin: var(--spacing-lg) auto;
     max-width: 800px;
-    padding: 1rem;
-    background-color: #111;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    padding: var(--spacing-sm);
+    background-color: var(--color-dark);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
 }
 
 .button-row {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
+    gap: var(--spacing-sm);
+    padding-top: var(--spacing-sm);
+    padding-bottom: var(--spacing-sm);
     justify-content: center;
 }

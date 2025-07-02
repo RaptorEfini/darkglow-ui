@@ -25,28 +25,28 @@ class ContainerComponent extends HTMLElement {
       }
 
       .container {
-        margin: 2rem auto;
+        margin: var(--spacing-lg) auto;
         max-width: 800px;
-        padding: 1rem;
-        background-color: #111;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        padding: var(--spacing-sm);
+        background-color: var(--color-dark);
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-md);
         overflow-x: auto;
       }
 
       .content {
         display: flex;
         flex-direction: column;
-        gap: 1rem;
+        gap: var(--spacing-sm);
       }
 
       /* Style for button rows inside the container */
       ::slotted(.button-row) {
         display: flex;
         flex-wrap: wrap;
-        gap: 1rem;
-        padding-top: 1rem;
-        padding-bottom: 1rem;
+        gap: var(--spacing-sm);
+        padding-top: var(--spacing-sm);
+        padding-bottom: var(--spacing-sm);
         justify-content: center;
       }
     `;

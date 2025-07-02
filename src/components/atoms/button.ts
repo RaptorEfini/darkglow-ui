@@ -54,9 +54,9 @@ class ButtonComponent extends HTMLElement {
 
       .button {
         font-family: "Raleway", sans-serif;
-        padding: 10px 20px;
+        padding: var(--spacing-xs) var(--spacing-sm);
         border: none;
-        border-radius: 4px;
+        border-radius: var(--border-radius);
         cursor: pointer;
         font-size: 16px;
         transition: all 0.3s ease;
@@ -65,12 +65,12 @@ class ButtonComponent extends HTMLElement {
 
       .button:hover:not(:disabled) {
         transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        box-shadow: var(--shadow-sm);
       }
 
       .button:active:not(:disabled) {
         transform: translateY(0);
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        box-shadow: var(--shadow-sm);
       }
 
       .button:disabled {
@@ -79,24 +79,24 @@ class ButtonComponent extends HTMLElement {
       }
 
       .primary {
-        background-color: #3498db;
-        color: white;
+        background-color: var(--color-primary);
+        color: var(--color-white);
       }
 
       .secondary {
-        background-color: #2ecc71;
-        color: white;
+        background-color: var(--color-secondary);
+        color: var(--color-white);
       }
 
       .danger {
-        background-color: #e74c3c;
-        color: white;
+        background-color: var(--color-danger);
+        color: var(--color-white);
       }
 
       .ghost {
         background-color: transparent;
-        color: #3498db;
-        border: 1px solid #3498db;
+        color: var(--color-primary);
+        border: 1px solid var(--color-primary);
       }
     `;
 

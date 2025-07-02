@@ -56,7 +56,7 @@ class ButtonGroupComponent extends HTMLElement {
       .button-group {
         display: flex;
         flex-direction: ${this.orientation === 'vertical' ? 'column' : 'row'};
-        gap: 1rem;
+        gap: var(--spacing-sm);
         ${this.orientation === 'vertical' 
           ? `align-items: ${justifyContent};` 
           : `justify-content: ${justifyContent};`}

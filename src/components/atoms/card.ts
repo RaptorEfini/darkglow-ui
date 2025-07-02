@@ -33,56 +33,56 @@ class CardComponent extends HTMLElement {
       }
 
       .card {
-        background-color: #1a1a1a;
-        border-radius: 8px;
-        padding: 1.5rem;
-        margin: 1rem 0;
-        color: #ffffff;
+        background-color: var(--color-darker);
+        border-radius: var(--border-radius);
+        padding: var(--spacing-md);
+        margin: var(--spacing-sm) 0;
+        color: var(--color-white);
         transition: all 0.3s ease;
-        ${this.elevated ? 'box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);' : 'box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);'}
+        ${this.elevated ? 'box-shadow: var(--shadow-lg);' : 'box-shadow: var(--shadow-sm);'}
       }
 
       .card:hover {
-        ${this.elevated ? 'box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);' : 'box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);'}
+        ${this.elevated ? 'box-shadow: var(--shadow-xl);' : 'box-shadow: var(--shadow-md);'}
       }
 
       .card-content {
         display: flex;
         flex-direction: column;
-        gap: 1rem;
+        gap: var(--spacing-sm);
       }
 
       /* Variant styles */
       .default {
-        border: 1px solid #333;
+        border: 1px solid var(--color-gray-dark);
       }
 
       .primary {
-        border-left: 4px solid #3498db;
+        border-left: 4px solid var(--color-primary);
       }
 
       .secondary {
-        border-left: 4px solid #2ecc71;
+        border-left: 4px solid var(--color-secondary);
       }
 
       .danger {
-        border-left: 4px solid #e74c3c;
+        border-left: 4px solid var(--color-danger);
       }
 
       .outlined {
         background-color: transparent;
-        border: 1px solid #3498db;
+        border: 1px solid var(--color-primary);
       }
 
       /* Style for slotted elements */
       ::slotted(h1), ::slotted(h2), ::slotted(h3) {
         margin-top: 0;
-        color: #ffffff;
+        color: var(--color-white);
       }
 
       ::slotted(p) {
         margin: 0;
-        color: #cccccc;
+        color: var(--color-gray-light);
       }
     `;
 
