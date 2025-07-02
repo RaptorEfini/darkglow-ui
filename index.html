@@ -122,11 +122,15 @@
 
   <darkglow-container>
     <h2>Akai Elements</h2>
-    <div class="button-row">
-      <darkglow-button>Primary</darkglow-button>
-      <darkglow-button variant="danger">Danger</darkglow-button>
-      <darkglow-button variant="ghost">Ghost</darkglow-button>
+
+    <div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin-top: 20px;">
+      <darkglow-knob value="75">Volume</darkglow-knob>
+      <darkglow-knob variant="secondary" value="50">Pan</darkglow-knob>
+      <darkglow-knob variant="danger" value="25">Filter</darkglow-knob>
+      <darkglow-knob variant="accent" value="90">Resonance</darkglow-knob>
+      <darkglow-knob disabled value="60">Disabled</darkglow-knob>
     </div>
+
   </darkglow-container>
   <div slot="footer">
     Futer
