@@ -18,22 +18,29 @@ html, body {
     height: 100%;
     width: 100%;
     overflow: hidden;
+    background: linear-gradient(to bottom, #0d0221, #1a0b2e);
+    background-attachment: fixed;
 }
 
 :root {
-    /* Colors */
-    --color-black: #000000;
-    --color-dark: #111111;
-    --color-darker: #1a1a1a;
-    --color-gray-dark: #333333;
+    /* Synthwave Colors */
+    --color-black: #0d0221;
+    --color-dark: #1a0b2e;
+    --color-darker: #241734;
+    --color-gray-dark: #2d1b42;
     --color-white: #ffffff;
     --color-white-muted: rgba(255, 255, 255, 0.87);
     --color-gray-light: #cccccc;
 
-    /* Brand Colors */
-    --color-primary: #3498db;
-    --color-secondary: #2ecc71;
-    --color-danger: #e74c3c;
+    /* Synthwave Neon Colors */
+    --color-primary: #ff00ff; /* Magenta */
+    --color-primary-glow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff;
+    --color-secondary: #00ffff; /* Cyan */
+    --color-secondary-glow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff;
+    --color-danger: #ff2b6d; /* Hot pink */
+    --color-danger-glow: 0 0 10px #ff2b6d, 0 0 20px #ff2b6d, 0 0 30px #ff2b6d;
+    --color-accent: #f9c80e; /* Yellow */
+    --color-accent-glow: 0 0 10px #f9c80e, 0 0 20px #f9c80e, 0 0 30px #f9c80e;
 
     /* Spacing */
     --spacing-xs: 0.5rem;
@@ -44,12 +51,12 @@ html, body {
     /* Border Radius */
     --border-radius: 8px;
 
-    /* Shadows */
-    --shadow-sm: 0 4px 8px rgba(0, 0, 0, 0.2);
-    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
-    --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.4);
-    --shadow-xl: 0 12px 24px rgba(0, 0, 0, 0.5);
-    --shadow-up: 0 -2px 4px rgba(0, 0, 0, 0.3);
+    /* Synthwave Shadows */
+    --shadow-sm: 0 4px 8px rgba(255, 0, 255, 0.2);
+    --shadow-md: 0 4px 12px rgba(255, 0, 255, 0.3);
+    --shadow-lg: 0 8px 16px rgba(255, 0, 255, 0.4);
+    --shadow-xl: 0 12px 24px rgba(255, 0, 255, 0.5);
+    --shadow-up: 0 -2px 4px rgba(255, 0, 255, 0.3);
 
     /* Base styles */
     font-family: "Raleway", Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -59,10 +66,58 @@ html, body {
     text-align: center;
 }
 
-h1, h2, h3, h4, h5, h6 {
-    font-family: "Orbitron", Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+/* Synthwave Grid Background */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(rgba(255, 0, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 0, 255, 0.1) 1px, transparent 1px);
+    background-size: 40px 40px;
+    z-index: -1;
+    perspective: 1000px;
+    transform-style: preserve-3d;
+    transform: rotateX(60deg);
+    animation: grid-move 20s linear infinite;
 }
 
+@keyframes grid-move {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 0 40px;
+    }
+}
+
+/* Neon Text Effects */
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Orbitron", Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    color: var(--color-white);
+    text-shadow: 0 0 5px var(--color-white), 0 0 10px var(--color-primary);
+    letter-spacing: 1px;
+}
+
+h1 {
+    color: var(--color-primary);
+    text-shadow: var(--color-primary-glow);
+}
+
+h2 {
+    color: var(--color-secondary);
+    text-shadow: var(--color-secondary-glow);
+}
+
+h3 {
+    color: var(--color-accent);
+    text-shadow: var(--color-accent-glow);
+}
+
+/* Synthwave Button Container */
 .button-container {
     margin: var(--spacing-lg) auto;
     max-width: 800px;
@@ -70,6 +125,29 @@ h1, h2, h3, h4, h5, h6 {
     background-color: var(--color-dark);
     border-radius: var(--border-radius);
     box-shadow: var(--shadow-md);
+    border: 1px solid var(--color-primary);
+    position: relative;
+    overflow: hidden;
+}
+
+.button-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-primary), transparent);
+    animation: neon-border 2s linear infinite;
+}
+
+@keyframes neon-border {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
 }
 
 .button-row {
@@ -79,4 +157,58 @@ h1, h2, h3, h4, h5, h6 {
     padding-top: var(--spacing-sm);
     padding-bottom: var(--spacing-sm);
     justify-content: center;
+}
+
+/* Additional Synthwave Styles */
+a {
+    color: var(--color-primary);
+    text-decoration: none;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+a:hover {
+    color: var(--color-white);
+    text-shadow: var(--color-primary-glow);
+}
+
+a::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    bottom: -2px;
+    left: 0;
+    background: linear-gradient(90deg, transparent, var(--color-primary), transparent);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+a:hover::after {
+    transform: scaleX(1);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--color-darker);
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(var(--color-primary), var(--color-secondary));
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(var(--color-secondary), var(--color-primary));
+}
+
+/* Selection styling */
+::selection {
+    background-color: var(--color-primary);
+    color: var(--color-white);
 }

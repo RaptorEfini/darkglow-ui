@@ -32,12 +32,39 @@ class ContainerComponent extends HTMLElement {
         border-radius: var(--border-radius);
         box-shadow: var(--shadow-md);
         overflow-x: auto;
+        position: relative;
+        border: 1px solid var(--color-secondary);
+        box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+      }
+
+      .container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, var(--color-secondary), transparent);
+        animation: neon-scan 3s ease-in-out infinite;
+      }
+
+      @keyframes neon-scan {
+        0%, 100% {
+          opacity: 0;
+          transform: translateY(0);
+        }
+        50% {
+          opacity: 1;
+          transform: translateY(calc(100% - 2px));
+        }
       }
 
       .content {
         display: flex;
         flex-direction: column;
         gap: var(--spacing-sm);
+        position: relative;
+        z-index: 1;
       }
 
       /* Style for button rows inside the container */

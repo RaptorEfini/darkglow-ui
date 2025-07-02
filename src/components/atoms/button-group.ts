@@ -60,6 +60,23 @@ class ButtonGroupComponent extends HTMLElement {
         ${this.orientation === 'vertical' 
           ? `align-items: ${justifyContent};` 
           : `justify-content: ${justifyContent};`}
+        padding: var(--spacing-xs);
+        background: rgba(255, 0, 255, 0.05);
+        border-radius: var(--border-radius);
+        position: relative;
+      }
+
+      .button-group::after {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: -1px;
+        right: -1px;
+        bottom: -1px;
+        border-radius: calc(var(--border-radius) + 1px);
+        background: linear-gradient(45deg, var(--color-primary), var(--color-secondary));
+        z-index: -1;
+        opacity: 0.3;
       }
 
       /* When horizontal, allow wrapping on small screens */
@@ -70,6 +87,12 @@ class ButtonGroupComponent extends HTMLElement {
       /* Style for slotted buttons */
       ::slotted(darkglow-button) {
         margin: 0;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      ::slotted(darkglow-button:hover) {
+        transform: translateY(-2px);
+        filter: brightness(1.2);
       }
     `;
 
