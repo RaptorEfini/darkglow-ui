@@ -8,24 +8,26 @@
   <script type="module" src="/src/main.ts"></script>
 </head>
 <body>
-<header>
-  Jeder
-</header>
-<main>
+<darkglow-layout title="Inicio">
+  <div slot="header">
+    Jeder
+  </div>
+
   <h1>Título</h1>
   <div class="button-container">
-    <h2>Button Component Examples</h2>
+    <h2>Botones</h2>
     <div class="button-row">
-      <darkglow-button>Primary Button</darkglow-button>
-      <darkglow-button variant="secondary">Secondary Button</darkglow-button>
-      <darkglow-button variant="danger">Danger Button</darkglow-button>
-      <darkglow-button variant="ghost">Ghost Button</darkglow-button>
-      <darkglow-button disabled>Disabled Button</darkglow-button>
+      <darkglow-button>Primary</darkglow-button>
+      <darkglow-button variant="secondary">Secondary</darkglow-button>
+      <darkglow-button variant="danger">Danger</darkglow-button>
+      <darkglow-button variant="ghost">Ghost</darkglow-button>
+      <darkglow-button disabled>Disabled</darkglow-button>
     </div>
   </div>
-</main>
-<footer>
-  Futer
-</footer>
+
+  <div slot="footer">
+    Futer
+  </div>
+</darkglow-layout>
 </body>
 </html>

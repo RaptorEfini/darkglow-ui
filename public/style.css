@@ -8,6 +8,18 @@
     src: url("fonts/Raleway/Raleway-VariableFont_wght.ttf");
 }
 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
 :root {
     font-family: "Raleway", Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
     font-weight: 300;
@@ -16,7 +28,7 @@
     text-align: center;
 }
 
-h1,h2,h3,h4,h5,h6 {
+h1, h2, h3, h4, h5, h6 {
     font-family: "Orbitron", Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
@@ -33,6 +45,7 @@ h1,h2,h3,h4,h5,h6 {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
-    margin-top: 1rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
     justify-content: center;
 }
