@@ -45,6 +45,7 @@ class ButtonGroupComponent extends HTMLElement {
         alignItems = 'center';
         break;
     }
+    console.log(alignItems)
 
     const styles = `
       :host {
