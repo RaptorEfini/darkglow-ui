@@ -65,66 +65,52 @@
     <darkglow-typography type="title">Title Default</darkglow-typography>
     <darkglow-typography type="subtitle">Subtitle Default</darkglow-typography>
     <darkglow-typography type="text">Text Default - This is a paragraph of text that demonstrates the default text styling in the Darkglow UI system.</darkglow-typography>
-
     <darkglow-typography type="title" variant="primary">Title Primary</darkglow-typography>
     <darkglow-typography type="subtitle" variant="primary">Subtitle Primary</darkglow-typography>
     <darkglow-typography type="text" variant="primary">Text Primary</darkglow-typography>
-
     <darkglow-typography type="title" variant="secondary">Title Secondary</darkglow-typography>
     <darkglow-typography type="subtitle" variant="secondary">Subtitle Secondary</darkglow-typography>
     <darkglow-typography type="text" variant="secondary">Text Secondary</darkglow-typography>
-
     <darkglow-typography type="title" variant="danger">Title Danger</darkglow-typography>
     <darkglow-typography type="subtitle" variant="danger">Subtitle Danger</darkglow-typography>
     <darkglow-typography type="text" variant="danger">Text Danger</darkglow-typography>
-
     <darkglow-typography type="title" variant="accent">Title Accent</darkglow-typography>
     <darkglow-typography type="subtitle" variant="accent">Subtitle Accent</darkglow-typography>
     <darkglow-typography type="text" variant="accent">Text Accent</darkglow-typography>
-
     <h3>Light Off Variant (Disabled)</h3>
     <darkglow-typography type="title" light-off>Title Light Off</darkglow-typography>
     <darkglow-typography type="subtitle" light-off>Subtitle Light Off</darkglow-typography>
     <darkglow-typography type="text" light-off>Text Light Off - This text appears in a disabled state with reduced opacity and no glow effects.</darkglow-typography>
   </darkglow-container>
-
   <darkglow-container>
     <h2>Cards</h2>
     <darkglow-card>
       <h3>Default Card</h3>
       <p>This is a default card with standard styling.</p>
     </darkglow-card>
-
     <darkglow-card variant="primary">
       <h3>Primary Card</h3>
       <p>This card has a primary accent on the left border.</p>
     </darkglow-card>
-
     <darkglow-card variant="secondary">
       <h3>Secondary Card</h3>
       <p>This card has a secondary accent on the left border.</p>
     </darkglow-card>
-
     <darkglow-card variant="danger">
       <h3>Danger Card</h3>
       <p>This card has a danger accent on the left border.</p>
     </darkglow-card>
-
     <darkglow-card variant="outlined">
       <h3>Outlined Card</h3>
       <p>This card has an outlined style with a transparent background.</p>
     </darkglow-card>
-
     <darkglow-card elevated>
       <h3>Elevated Card</h3>
       <p>This card has increased elevation with a stronger shadow effect.</p>
     </darkglow-card>
   </darkglow-container>
-
-
   <darkglow-container>
     <h2>Akai Elements</h2>
-
     <div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin-top: 20px;">
       <darkglow-knob value="75">Volume</darkglow-knob>
       <darkglow-knob variant="secondary" value="50">Pan</darkglow-knob>
@@ -132,7 +118,6 @@
       <darkglow-knob variant="accent" value="90">Resonance</darkglow-knob>
       <darkglow-knob disabled value="60">Disabled</darkglow-knob>
     </div>
-
     <h3>Pads</h3>
     <div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin-top: 20px;">
       <darkglow-pad number="1">Pad 1</darkglow-pad>
@@ -142,7 +127,15 @@
       <darkglow-pad number="5" active>Active</darkglow-pad>
       <darkglow-pad number="6" disabled>Disabled</darkglow-pad>
     </div>
-
+    <h3>Small Pads (Size S)</h3>
+    <div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin-top: 20px;">
+      <darkglow-pad number="1" size="s">Small 1</darkglow-pad>
+      <darkglow-pad number="2" variant="secondary" size="s">Small 2</darkglow-pad>
+      <darkglow-pad number="3" variant="danger" size="s">Small 3</darkglow-pad>
+      <darkglow-pad number="4" variant="accent" size="s">Small 4</darkglow-pad>
+      <darkglow-pad number="5" active size="s">Active S</darkglow-pad>
+      <darkglow-pad number="6" disabled size="s">Disabled S</darkglow-pad>
+    </div>
     <h3>Pad Grid Example</h3>
     <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; max-width: 300px; margin: 20px auto;">
       <darkglow-pad number="1"></darkglow-pad>
@@ -154,7 +147,17 @@
       <darkglow-pad number="7"></darkglow-pad>
       <darkglow-pad number="8"></darkglow-pad>
     </div>
-
+    <h3>Small Pad Grid Example (Size S)</h3>
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; max-width: 300px; margin: 20px auto;">
+      <darkglow-pad number="1" size="s"></darkglow-pad>
+      <darkglow-pad number="2" size="s"></darkglow-pad>
+      <darkglow-pad number="3" size="s"></darkglow-pad>
+      <darkglow-pad number="4" size="s"></darkglow-pad>
+      <darkglow-pad number="5" size="s"></darkglow-pad>
+      <darkglow-pad number="6" size="s"></darkglow-pad>
+      <darkglow-pad number="7" size="s"></darkglow-pad>
+      <darkglow-pad number="8" size="s"></darkglow-pad>
+    </div>
     <h3>Vertical Faders</h3>
     <div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin-top: 20px;">
       <darkglow-fader value="75">Volume</darkglow-fader>
@@ -163,7 +166,6 @@
       <darkglow-fader variant="accent" value="90">Resonance</darkglow-fader>
       <darkglow-fader disabled value="60">Disabled</darkglow-fader>
     </div>
-
     <h3>Horizontal Faders</h3>
     <div style="display: flex; flex-direction: column; gap: 20px; align-items: center; margin-top: 20px;">
       <darkglow-fader orientation="horizontal" value="75">Volume</darkglow-fader>
@@ -172,7 +174,6 @@
       <darkglow-fader orientation="horizontal" variant="accent" value="90">Resonance</darkglow-fader>
       <darkglow-fader orientation="horizontal" disabled value="60">Disabled</darkglow-fader>
     </div>
-
     <h3>Mixer Channel Example</h3>
     <div style="display: flex; gap: 30px; flex-wrap: wrap; justify-content: center; margin-top: 20px; background-color: var(--color-darker); padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
       <darkglow-fader value="80">Channel 1</darkglow-fader>
@@ -181,7 +182,6 @@
       <darkglow-fader value="55">Channel 4</darkglow-fader>
       <darkglow-fader variant="accent" value="90">Master</darkglow-fader>
     </div>
-
   </darkglow-container>
   <div slot="footer">RaptorEfini</div>
 </darkglow-layout>

@@ -1,6 +1,6 @@
 class PadComponent extends HTMLElement {
   static get observedAttributes() {
-    return ['number', 'variant', 'active', 'disabled'];
+    return ['number', 'variant', 'active', 'disabled', 'size'];
   }
 
   private _number: number | null = null;
@@ -16,7 +16,7 @@ class PadComponent extends HTMLElement {
   connectedCallback() {
     this._padElement = this.shadowRoot?.querySelector('.pad') as HTMLElement;
     this._numberElement = this.shadowRoot?.querySelector('.number') as HTMLElement;
-    
+
     this.addEventListener('click', this.handleClick);
     this.addEventListener('mousedown', this.handleMouseDown);
     this.addEventListener('mouseup', this.handleMouseUp);
@@ -39,6 +39,7 @@ class PadComponent extends HTMLElement {
       case 'variant':
       case 'active':
       case 'disabled':
+      case 'size':
         this.render();
         break;
     }
@@ -78,6 +79,10 @@ class PadComponent extends HTMLElement {
     return this.hasAttribute('disabled');
   }
 
+  get size() {
+    return this.getAttribute('size') || 'default';
+  }
+
   handleClick = (e: MouseEvent) => {
     if (this.disabled) return;
 
@@ -100,7 +105,7 @@ class PadComponent extends HTMLElement {
 
   updateNumberDisplay() {
     if (!this._numberElement) return;
-    
+
     if (this._number !== null) {
       this._numberElement.textContent = String(this._number);
       this._numberElement.style.display = 'flex';
@@ -220,6 +225,15 @@ class PadComponent extends HTMLElement {
       :host([disabled]) .number,
       :host([disabled]) .label {
         opacity: 0.6;
+      }
+
+      /* Size variants */
+      :host([size="s"]) .pad {
+        height: calc(var(--pad-size) / 2);
+      }
+
+      :host([size="s"]) .number {
+        font-size: 18px;
       }
     `;
 
