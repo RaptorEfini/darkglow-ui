@@ -10,9 +10,8 @@
 <body>
 <darkglow-layout title="Inicio">
   <div slot="header">
-    Jeder
+    <h1>Darkglow UI</h1>
   </div>
-  <h1>Darkglow UI</h1>
   <darkglow-container>
     <h2>Botones</h2>
     <div class="button-row">
@@ -22,6 +21,7 @@
       <darkglow-button variant="ghost">Ghost</darkglow-button>
       <darkglow-button disabled>Disabled</darkglow-button>
     </div>
+    <hr>
     <h2>Horizontal (Default)</h2>
     <darkglow-button-group>
       <darkglow-button>Primary</darkglow-button>
@@ -29,18 +29,21 @@
       <darkglow-button variant="danger">Danger</darkglow-button>
       <darkglow-button variant="ghost">Ghost</darkglow-button>
     </darkglow-button-group>
+    <hr>
     <h2>Horizontal (Left Aligned)</h2>
     <darkglow-button-group align="start">
       <darkglow-button>Primary</darkglow-button>
       <darkglow-button variant="secondary">Secondary</darkglow-button>
       <darkglow-button variant="danger">Danger</darkglow-button>
     </darkglow-button-group>
+    <hr>
     <h2>Horizontal (Right Aligned)</h2>
     <darkglow-button-group align="end">
       <darkglow-button>Primary</darkglow-button>
       <darkglow-button variant="secondary">Secondary</darkglow-button>
       <darkglow-button variant="danger">Danger</darkglow-button>
     </darkglow-button-group>
+    <hr>
     <h2>Vertical</h2>
     <darkglow-button-group orientation="vertical">
       <darkglow-button>Primary</darkglow-button>
@@ -48,6 +51,7 @@
       <darkglow-button variant="danger">Danger</darkglow-button>
       <darkglow-button variant="ghost">Ghost</darkglow-button>
     </darkglow-button-group>
+    <hr>
     <h2>Vertical (Left Aligned)</h2>
     <darkglow-button-group orientation="vertical" align="start">
       <darkglow-button>Primary</darkglow-button>
@@ -55,11 +59,9 @@
       <darkglow-button variant="danger">Danger</darkglow-button>
     </darkglow-button-group>
   </darkglow-container>
-
-
+  <hr>
   <darkglow-container>
     <h2>Typography</h2>
-
     <darkglow-typography type="title">Title Default</darkglow-typography>
     <darkglow-typography type="subtitle">Subtitle Default</darkglow-typography>
     <darkglow-typography type="text">Text Default - This is a paragraph of text that demonstrates the default text styling in the Darkglow UI system.</darkglow-typography>
@@ -131,10 +133,57 @@
       <darkglow-knob disabled value="60">Disabled</darkglow-knob>
     </div>
 
+    <h3>Pads</h3>
+    <div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin-top: 20px;">
+      <darkglow-pad number="1">Pad 1</darkglow-pad>
+      <darkglow-pad number="2" variant="secondary">Pad 2</darkglow-pad>
+      <darkglow-pad number="3" variant="danger">Pad 3</darkglow-pad>
+      <darkglow-pad number="4" variant="accent">Pad 4</darkglow-pad>
+      <darkglow-pad number="5" active>Active</darkglow-pad>
+      <darkglow-pad number="6" disabled>Disabled</darkglow-pad>
+    </div>
+
+    <h3>Pad Grid Example</h3>
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; max-width: 300px; margin: 20px auto;">
+      <darkglow-pad number="1"></darkglow-pad>
+      <darkglow-pad number="2"></darkglow-pad>
+      <darkglow-pad number="3"></darkglow-pad>
+      <darkglow-pad number="4"></darkglow-pad>
+      <darkglow-pad number="5"></darkglow-pad>
+      <darkglow-pad number="6"></darkglow-pad>
+      <darkglow-pad number="7"></darkglow-pad>
+      <darkglow-pad number="8"></darkglow-pad>
+    </div>
+
+    <h3>Vertical Faders</h3>
+    <div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin-top: 20px;">
+      <darkglow-fader value="75">Volume</darkglow-fader>
+      <darkglow-fader variant="secondary" value="50">Pan</darkglow-fader>
+      <darkglow-fader variant="danger" value="25">Filter</darkglow-fader>
+      <darkglow-fader variant="accent" value="90">Resonance</darkglow-fader>
+      <darkglow-fader disabled value="60">Disabled</darkglow-fader>
+    </div>
+
+    <h3>Horizontal Faders</h3>
+    <div style="display: flex; flex-direction: column; gap: 20px; align-items: center; margin-top: 20px;">
+      <darkglow-fader orientation="horizontal" value="75">Volume</darkglow-fader>
+      <darkglow-fader orientation="horizontal" variant="secondary" value="50">Pan</darkglow-fader>
+      <darkglow-fader orientation="horizontal" variant="danger" value="25">Filter</darkglow-fader>
+      <darkglow-fader orientation="horizontal" variant="accent" value="90">Resonance</darkglow-fader>
+      <darkglow-fader orientation="horizontal" disabled value="60">Disabled</darkglow-fader>
+    </div>
+
+    <h3>Mixer Channel Example</h3>
+    <div style="display: flex; gap: 30px; flex-wrap: wrap; justify-content: center; margin-top: 20px; background-color: var(--color-darker); padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
+      <darkglow-fader value="80">Channel 1</darkglow-fader>
+      <darkglow-fader value="65">Channel 2</darkglow-fader>
+      <darkglow-fader value="70">Channel 3</darkglow-fader>
+      <darkglow-fader value="55">Channel 4</darkglow-fader>
+      <darkglow-fader variant="accent" value="90">Master</darkglow-fader>
+    </div>
+
   </darkglow-container>
-  <div slot="footer">
-    Futer
-  </div>
+  <div slot="footer">RaptorEfini</div>
 </darkglow-layout>
 </body>
 </html>
