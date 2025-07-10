@@ -44,15 +44,16 @@ class KnobComponent extends HTMLElement {
 
     switch (name) {
       case 'value':
-        this._value = Number(newValue) || 50;
+        // Use isNaN to check if the value is not a number, instead of using || which treats 0 as falsy
+        this._value = isNaN(Number(newValue)) ? 50 : Number(newValue);
         this.updateKnobPosition();
         break;
       case 'min':
-        this._min = Number(newValue) || 0;
+        this._min = isNaN(Number(newValue)) ? 0 : Number(newValue);
         this.updateKnobPosition();
         break;
       case 'max':
-        this._max = Number(newValue) || 100;
+        this._max = isNaN(Number(newValue)) ? 100 : Number(newValue);
         this.updateKnobPosition();
         break;
       case 'disabled':
@@ -148,7 +149,11 @@ class KnobComponent extends HTMLElement {
     if (!this._indicatorElement || !this._valueDisplay) return;
 
     const percentage = ((this._value - this._min) / (this._max - this._min)) * 100;
-    const degrees = percentage * 2.7; // 270 degrees rotation range
+    // Adjust rotation to start at 225 degrees (7 o'clock) and end at 150 degrees (5 o'clock)
+    // This means a 285 degree rotation range going clockwise (passing through 0/360)
+    const startAngle = 225;
+    const rotationRange = 285;
+    const degrees = startAngle + (percentage * rotationRange / 100);
 
     this._indicatorElement.style.transform = `rotate(${degrees}deg)`;
     this._valueDisplay.textContent = Math.round(this._value).toString();
@@ -313,20 +318,54 @@ class KnobComponent extends HTMLElement {
         background-color: var(--indicator-color);
         box-shadow: 0 0 3px var(--indicator-color);
       }
+
+      /* Special ticks at 7 o'clock and 5 o'clock positions */
+      .tick.limit-marker {
+        height: 12px;
+        width: 2px;
+        background-color: var(--indicator-color);
+        box-shadow: 0 0 5px var(--indicator-color);
+      }
     `;
 
     // Create tick marks
     let ticksHtml = '<div class="ticks">';
+
+    // Add special limit markers at 7 o'clock (225 degrees) and 5 o'clock (150 degrees)
+    const startAngle = 225; // 7 o'clock position
+    const endAngle = 150;   // 5 o'clock position
+
     for (let i = 0; i < 28; i++) {
       const angle = i * (270 / 27);
       const isMajor = i % 9 === 0;
+
+      // Check if this tick is at or very close to one of our limit positions
+      const isStartLimit = Math.abs(angle - startAngle) < 5;
+      const isEndLimit = Math.abs(angle - endAngle) < 5;
+      const isLimitMarker = isStartLimit || isEndLimit;
+
       const radius = 'calc(var(--knob-size) / 2 - 4px)'; // Smaller to stay within the knob border
+
+      // Apply appropriate classes based on whether it's a major tick or limit marker
+      const tickClass = isLimitMarker ? 'limit-marker' : (isMajor ? 'major' : '');
+
       ticksHtml += `
-        <div class="tick ${isMajor ? 'major' : ''}" 
+        <div class="tick ${tickClass}" 
              style="transform: rotate(${angle}deg) translateY(-${radius});">
         </div>
       `;
     }
+
+    // Add exact limit markers at precise angles if needed
+    ticksHtml += `
+      <div class="tick limit-marker" 
+           style="transform: rotate(${startAngle}deg) translateY(-calc(var(--knob-size) / 2 - 4px));">
+      </div>
+      <div class="tick limit-marker" 
+           style="transform: rotate(${endAngle}deg) translateY(-calc(var(--knob-size) / 2 - 4px));">
+      </div>
+    `;
+
     ticksHtml += '</div>';
 
     this.shadowRoot.innerHTML = `
@@ -338,7 +377,7 @@ class KnobComponent extends HTMLElement {
             <div class="indicator"></div>
           </div>
         </div>
-        <div class="value-display">50</div>
+        <div class="value-display">${Math.round(this._value).toString()}</div>
         <div class="label"><slot></slot></div>
       </div>
     `;

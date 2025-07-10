@@ -45,15 +45,16 @@ class FaderComponent extends HTMLElement {
 
     switch (name) {
       case 'value':
-        this._value = Number(newValue) || 50;
+        // Use isNaN to check if the value is not a number, instead of using || which treats 0 as falsy
+        this._value = isNaN(Number(newValue)) ? 50 : Number(newValue);
         this.updateFaderPosition();
         break;
       case 'min':
-        this._min = Number(newValue) || 0;
+        this._min = isNaN(Number(newValue)) ? 0 : Number(newValue);
         this.updateFaderPosition();
         break;
       case 'max':
-        this._max = Number(newValue) || 100;
+        this._max = isNaN(Number(newValue)) ? 100 : Number(newValue);
         this.updateFaderPosition();
         break;
       case 'disabled':
