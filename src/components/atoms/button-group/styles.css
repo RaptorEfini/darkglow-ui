@@ -1,0 +1,30 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.button-group {
+  display: flex;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-xs);
+  background: rgba(13, 2, 33, 0.7);
+  border-radius: var(--border-radius);
+  position: relative;
+  backdrop-filter: blur(5px);
+}
+
+/* When horizontal, allow wrapping on small screens */
+.horizontal {
+  flex-wrap: wrap;
+}
+
+/* Style for slotted buttons */
+::slotted(darkglow-button) {
+  margin: 0;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+::slotted(darkglow-button:hover) {
+  transform: translateY(-2px);
+  filter: brightness(1.2);
+}

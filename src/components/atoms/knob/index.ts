@@ -1,3 +1,5 @@
+import styles from './styles.css?inline';
+
 class KnobComponent extends HTMLElement {
   static get observedAttributes() {
     return ['value', 'min', 'max', 'disabled', 'variant'];
@@ -162,169 +164,10 @@ class KnobComponent extends HTMLElement {
   render() {
     if (!this.shadowRoot) return;
 
-    const styles = `
-      :host {
-        display: inline-block;
-        --knob-size: 80px;
-        --knob-color: var(--color-darker);
-        --indicator-color: var(--color-primary);
-        --knob-border: var(--color-primary);
-      }
-
-      .knob-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: var(--knob-size);
-        user-select: none;
-      }
-
-      .knob-wrapper {
-        position: relative;
-        width: var(--knob-size);
-        height: var(--knob-size);
-        overflow: hidden;
-        border-radius: 50%;
-      }
-
+    // Dynamic styles that depend on component properties
+    const dynamicStyles = `
       .knob {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        border-radius: 50%;
-        background-color: var(--knob-color);
-        border: 2px solid var(--knob-border);
-        box-shadow: 0 0 10px var(--knob-border);
         cursor: ${this.disabled ? 'not-allowed' : 'pointer'};
-        transition: box-shadow 0.3s ease, transform 0.1s ease;
-        overflow: hidden;
-      }
-
-      .knob::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 70%);
-        z-index: 1;
-      }
-
-      .knob::after {
-        content: '';
-        position: absolute;
-        top: 5px;
-        left: 5px;
-        right: 5px;
-        bottom: 5px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%);
-        z-index: 2;
-      }
-
-      .knob.active {
-        transform: scale(0.95);
-      }
-
-      .indicator {
-        position: absolute;
-        top: 10%;
-        left: 50%;
-        width: 2px;
-        height: 40%;
-        background-color: var(--indicator-color);
-        transform-origin: bottom center;
-        transform: translateX(-50%) rotate(0deg);
-        z-index: 3;
-        box-shadow: 0 0 5px var(--indicator-color);
-      }
-
-      .value-display {
-        margin-top: 8px;
-        font-family: "Orbitron", sans-serif;
-        font-size: 14px;
-        color: var(--indicator-color);
-        text-shadow: 0 0 5px var(--indicator-color);
-      }
-
-      .label {
-        margin-top: 4px;
-        font-family: "Orbitron", sans-serif;
-        font-size: 12px;
-        color: var(--color-white);
-        text-transform: uppercase;
-        letter-spacing: 1px;
-      }
-
-      /* Variants */
-      .primary {
-        --knob-border: var(--color-primary);
-        --indicator-color: var(--color-primary);
-      }
-
-      .secondary {
-        --knob-border: var(--color-secondary);
-        --indicator-color: var(--color-secondary);
-      }
-
-      .danger {
-        --knob-border: var(--color-danger);
-        --indicator-color: var(--color-danger);
-      }
-
-      .accent {
-        --knob-border: var(--color-accent);
-        --indicator-color: var(--color-accent);
-      }
-
-      /* Disabled state */
-      :host([disabled]) .knob {
-        opacity: 0.6;
-        box-shadow: none;
-      }
-
-      :host([disabled]) .value-display,
-      :host([disabled]) .label {
-        opacity: 0.6;
-      }
-
-      /* Tick marks around the knob */
-      .ticks {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        z-index: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-
-      .tick {
-        position: absolute;
-        width: 2px;
-        height: 6px;
-        background-color: rgba(255, 255, 255, 0.3);
-        transform-origin: bottom center;
-        top: 0;
-        left: calc(50% - 1px);
-      }
-
-      .tick.major {
-        height: 10px;
-        width: 2px;
-        background-color: var(--indicator-color);
-        box-shadow: 0 0 3px var(--indicator-color);
-      }
-
-      /* Special ticks at 7 o'clock and 5 o'clock positions */
-      .tick.limit-marker {
-        height: 12px;
-        width: 2px;
-        background-color: var(--indicator-color);
-        box-shadow: 0 0 5px var(--indicator-color);
       }
     `;
 
@@ -369,7 +212,10 @@ class KnobComponent extends HTMLElement {
     ticksHtml += '</div>';
 
     this.shadowRoot.innerHTML = `
-      <style>${styles}</style>
+      <style>
+        ${styles}
+        ${dynamicStyles}
+      </style>
       <div class="knob-container">
         <div class="knob-wrapper">
           <div class="knob ${this.variant} ${this.disabled ? 'disabled' : ''}">

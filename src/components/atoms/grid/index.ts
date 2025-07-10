@@ -1,3 +1,5 @@
+import styles from './styles.css?inline';
+
 class GridComponent extends HTMLElement {
   static get observedAttributes() {
     return ['columns', 'gap', 'max-width', 'align', 'variant'];
@@ -94,42 +96,25 @@ class GridComponent extends HTMLElement {
         break;
     }
 
-    const styles = `
-      :host {
-        display: block;
-        width: 100%;
-      }
-
+    // Dynamic styles that depend on component properties
+    const dynamicStyles = `
       .grid-container {
-        display: grid;
         grid-template-columns: repeat(${this.columns}, 1fr);
         gap: ${this.gap};
         max-width: ${this.maxWidth};
-        margin: var(--spacing-md) auto;
         justify-items: ${justifyItems};
         justify-content: ${justifyContent};
-        padding: var(--spacing-sm);
         background: ${background};
         border: ${border};
         box-shadow: ${boxShadow};
-        border-radius: var(--border-radius);
-        position: relative;
-        backdrop-filter: blur(5px);
-      }
-
-      /* Style for slotted elements */
-      ::slotted(*) {
-        transition: transform 0.2s ease, filter 0.2s ease;
-      }
-
-      ::slotted(*:hover) {
-        transform: translateY(-2px);
-        filter: brightness(1.2);
       }
     `;
 
     this.shadowRoot.innerHTML = `
-      <style>${styles}</style>
+      <style>
+        ${styles}
+        ${dynamicStyles}
+      </style>
       <div class="grid-container">
         <slot></slot>
       </div>

@@ -1,3 +1,5 @@
+import styles from './styles.css?inline';
+
 class PadComponent extends HTMLElement {
   static get observedAttributes() {
     return ['number', 'variant', 'active', 'disabled', 'size'];
@@ -117,128 +119,18 @@ class PadComponent extends HTMLElement {
   render() {
     if (!this.shadowRoot) return;
 
-    const styles = `
-      :host {
-        display: inline-block;
-        --pad-size: 60px;
-        --pad-color: var(--color-darker);
-        --pad-border: var(--color-primary);
-        --pad-active-color: var(--color-primary);
-      }
-
-      .pad-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: var(--pad-size);
-        user-select: none;
-      }
-
+    // Dynamic styles that depend on component properties
+    const dynamicStyles = `
       .pad {
-        position: relative;
-        width: var(--pad-size);
-        height: var(--pad-size);
-        background-color: var(--pad-color);
-        border: 2px solid var(--pad-border);
-        box-shadow: 0 0 10px var(--pad-border);
         cursor: ${this.disabled ? 'not-allowed' : 'pointer'};
-        transition: box-shadow 0.3s ease, transform 0.1s ease, background-color 0.2s ease;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-
-      .pad::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%);
-        z-index: 1;
-      }
-
-      .pad.pressed {
-        transform: scale(0.95);
-      }
-
-      .number {
-        position: relative;
-        z-index: 2;
-        font-family: "Orbitron", sans-serif;
-        font-size: 24px;
-        color: var(--pad-border);
-        text-shadow: 0 0 5px var(--pad-border);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-
-      .label {
-        margin-top: 4px;
-        font-family: "Orbitron", sans-serif;
-        font-size: 12px;
-        color: var(--color-white);
-        text-transform: uppercase;
-        letter-spacing: 1px;
-      }
-
-      /* Variants */
-      .primary {
-        --pad-border: var(--color-primary);
-        --pad-active-color: var(--color-primary);
-      }
-
-      .secondary {
-        --pad-border: var(--color-secondary);
-        --pad-active-color: var(--color-secondary);
-      }
-
-      .danger {
-        --pad-border: var(--color-danger);
-        --pad-active-color: var(--color-danger);
-      }
-
-      .accent {
-        --pad-border: var(--color-accent);
-        --pad-active-color: var(--color-accent);
-      }
-
-      /* Active state */
-      :host([active]) .pad {
-        background-color: var(--pad-active-color);
-        box-shadow: 0 0 15px var(--pad-border);
-      }
-
-      :host([active]) .number {
-        color: var(--color-white);
-        text-shadow: 0 0 5px var(--color-white);
-      }
-
-      /* Disabled state */
-      :host([disabled]) .pad {
-        opacity: 0.6;
-        box-shadow: none;
-      }
-
-      :host([disabled]) .number,
-      :host([disabled]) .label {
-        opacity: 0.6;
-      }
-
-      /* Size variants */
-      :host([size="s"]) .pad {
-        height: calc(var(--pad-size) / 2);
-      }
-
-      :host([size="s"]) .number {
-        font-size: 18px;
       }
     `;
 
     this.shadowRoot.innerHTML = `
-      <style>${styles}</style>
+      <style>
+        ${styles}
+        ${dynamicStyles}
+      </style>
       <div class="pad-container">
         <div class="pad ${this.variant} ${this.active ? 'active' : ''} ${this.disabled ? 'disabled' : ''}">
           <div class="number">${this._number !== null ? this._number : ''}</div>

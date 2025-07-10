@@ -1,0 +1,119 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.card {
+  background-color: var(--color-darker);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-md);
+  margin: var(--spacing-sm) 0;
+  color: var(--color-white);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(5px);
+  border: 1px solid var(--color-primary);
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-primary), transparent);
+  animation: neon-border 2s linear infinite;
+}
+
+@keyframes neon-border {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.card:hover {
+  transform: translateY(-3px);
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  position: relative;
+  z-index: 1;
+}
+
+/* Variant styles with synthwave effects */
+.default {
+  border: 1px solid var(--color-gray-dark);
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+}
+
+.primary {
+  border: 1px solid var(--color-primary);
+  box-shadow: 0 0 10px rgba(255, 0, 255, 0.3);
+}
+
+.primary::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background-color: var(--color-primary);
+  box-shadow: var(--color-primary-glow);
+}
+
+.secondary {
+  border: 1px solid var(--color-secondary);
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+}
+
+.secondary::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background-color: var(--color-secondary);
+  box-shadow: var(--color-secondary-glow);
+}
+
+.danger {
+  border: 1px solid var(--color-danger);
+  box-shadow: 0 0 10px rgba(255, 43, 109, 0.3);
+}
+
+.danger::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background-color: var(--color-danger);
+  box-shadow: var(--color-danger-glow);
+}
+
+.outlined {
+  background-color: transparent;
+  border: 1px solid var(--color-primary);
+}
+
+/* Style for slotted elements */
+::slotted(h1), ::slotted(h2), ::slotted(h3) {
+  margin-top: 0;
+  color: var(--color-white);
+}
+
+::slotted(p) {
+  margin: 0;
+  color: var(--color-gray-light);
+}

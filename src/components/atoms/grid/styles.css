@@ -1,0 +1,23 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.grid-container {
+  display: grid;
+  margin: var(--spacing-md) auto;
+  padding: var(--spacing-sm);
+  border-radius: var(--border-radius);
+  position: relative;
+  backdrop-filter: blur(5px);
+}
+
+/* Style for slotted elements */
+::slotted(*) {
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+::slotted(*:hover) {
+  transform: translateY(-2px);
+  filter: brightness(1.2);
+}

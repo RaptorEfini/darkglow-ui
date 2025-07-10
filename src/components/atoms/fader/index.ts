@@ -1,3 +1,5 @@
+import styles from './styles.css?inline';
+
 class FaderComponent extends HTMLElement {
   static get observedAttributes() {
     return ['value', 'min', 'max', 'disabled', 'variant', 'orientation'];
@@ -59,6 +61,7 @@ class FaderComponent extends HTMLElement {
         break;
       case 'disabled':
       case 'variant':
+      case 'orientation':
         this.render();
         break;
     }
@@ -187,9 +190,9 @@ class FaderComponent extends HTMLElement {
 
     const isHorizontal = this.orientation === 'horizontal';
 
-    const styles = `
+    // Dynamic styles that depend on component properties
+    const dynamicStyles = `
       :host {
-        display: inline-block;
         --fader-width: ${isHorizontal ? '150px' : '40px'};
         --fader-height: ${isHorizontal ? '40px' : '150px'};
         --fader-color: var(--color-darker);
@@ -199,140 +202,41 @@ class FaderComponent extends HTMLElement {
       }
 
       .fader-container {
-        display: flex;
         flex-direction: ${isHorizontal ? 'column' : 'column'};
-        align-items: center;
         width: var(--fader-width);
-        user-select: none;
       }
 
       .fader-wrapper {
-        position: relative;
         width: var(--fader-width);
         height: var(--fader-height);
         margin: ${isHorizontal ? '0 0 10px 0' : '10px 0'};
       }
 
       .fader-track {
-        position: absolute;
         ${isHorizontal ? 'top: 50%; left: 0; transform: translateY(-50%); width: 100%; height: 8px;' : 'top: 0; left: 50%; transform: translateX(-50%); width: 8px; height: 100%;'}
-        background-color: var(--fader-color);
-        border: 2px solid var(--fader-border);
-        box-shadow: 0 0 10px var(--fader-border);
-        border-radius: 4px;
-        overflow: hidden;
       }
 
       .fader-track::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
         background: ${isHorizontal ? 'linear-gradient(to right, rgba(255,255,255,0.1) 0%, transparent 50%)' : 'linear-gradient(to bottom, rgba(255,255,255,0.1) 0%, transparent 50%)'};
-        z-index: 1;
       }
 
       .fader-handle {
-        position: absolute;
         ${isHorizontal ? 'left: 0; top: 50%; transform: translate(-50%, -50%);' : 'left: 50%; top: 0; transform: translateX(-50%);'}
         width: ${isHorizontal ? '16px' : 'var(--fader-width)'};
         height: ${isHorizontal ? 'var(--fader-height)' : '16px'};
-        background-color: var(--handle-color);
-        border: 2px solid var(--fader-border);
-        box-shadow: 0 0 10px var(--fader-border);
-        border-radius: 4px;
         cursor: ${this.disabled ? 'not-allowed' : (isHorizontal ? 'ew-resize' : 'ns-resize')};
-        transition: box-shadow 0.3s ease, transform 0.1s ease;
-        z-index: 2;
-      }
-
-      .fader-handle::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%);
-        z-index: 1;
       }
 
       .fader-handle.active {
         transform: ${isHorizontal ? 'translate(-50%, -50%) scale(0.95)' : 'translateX(-50%) scale(0.95)'};
       }
 
-      .value-display {
-        margin-top: 8px;
-        font-family: "Orbitron", sans-serif;
-        font-size: 14px;
-        color: var(--indicator-color);
-        text-shadow: 0 0 5px var(--indicator-color);
-      }
-
-      .label {
-        margin-top: 4px;
-        font-family: "Orbitron", sans-serif;
-        font-size: 12px;
-        color: var(--color-white);
-        text-transform: uppercase;
-        letter-spacing: 1px;
-      }
-
-      /* Tick marks along the fader */
-      .ticks {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        z-index: 0;
-      }
-
       .tick {
-        position: absolute;
         ${isHorizontal ? 'width: 2px; height: 6px; top: calc(50% - 10px);' : 'width: 6px; height: 2px; left: calc(50% - 10px);'}
-        background-color: rgba(255, 255, 255, 0.3);
       }
 
       .tick.major {
         ${isHorizontal ? 'width: 2px; height: 10px;' : 'width: 10px; height: 2px;'}
-        background-color: var(--indicator-color);
-        box-shadow: 0 0 3px var(--indicator-color);
-      }
-
-      /* Variants */
-      .primary {
-        --fader-border: var(--color-primary);
-        --indicator-color: var(--color-primary);
-      }
-
-      .secondary {
-        --fader-border: var(--color-secondary);
-        --indicator-color: var(--color-secondary);
-      }
-
-      .danger {
-        --fader-border: var(--color-danger);
-        --indicator-color: var(--color-danger);
-      }
-
-      .accent {
-        --fader-border: var(--color-accent);
-        --indicator-color: var(--color-accent);
-      }
-
-      /* Disabled state */
-      :host([disabled]) .fader-track,
-      :host([disabled]) .fader-handle {
-        opacity: 0.6;
-        box-shadow: none;
-      }
-
-      :host([disabled]) .value-display,
-      :host([disabled]) .label {
-        opacity: 0.6;
       }
     `;
 
@@ -358,7 +262,10 @@ class FaderComponent extends HTMLElement {
     ticksHtml += '</div>';
 
     this.shadowRoot.innerHTML = `
-      <style>${styles}</style>
+      <style>
+        ${styles}
+        ${dynamicStyles}
+      </style>
       <div class="fader-container">
         <div class="fader-wrapper">
           <div class="fader-track ${this.variant} ${this.disabled ? 'disabled' : ''}">

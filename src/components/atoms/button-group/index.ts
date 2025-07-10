@@ -1,3 +1,5 @@
+import styles from './styles.css?inline';
+
 class ButtonGroupComponent extends HTMLElement {
   static get observedAttributes() {
     return ['orientation', 'align'];
@@ -47,45 +49,21 @@ class ButtonGroupComponent extends HTMLElement {
     }
     console.log(alignItems)
 
-    const styles = `
-      :host {
-        display: block;
-        width: 100%;
-      }
-
+    // Dynamic styles that depend on component properties
+    const dynamicStyles = `
       .button-group {
-        display: flex;
         flex-direction: ${this.orientation === 'vertical' ? 'column' : 'row'};
-        gap: var(--spacing-sm);
         ${this.orientation === 'vertical' 
           ? `align-items: ${justifyContent};` 
           : `justify-content: ${justifyContent};`}
-        padding: var(--spacing-xs);
-        background: rgba(13, 2, 33, 0.7);
-        border-radius: var(--border-radius);
-        position: relative;
-        backdrop-filter: blur(5px);
-      }
-
-      /* When horizontal, allow wrapping on small screens */
-      .horizontal {
-        flex-wrap: wrap;
-      }
-
-      /* Style for slotted buttons */
-      ::slotted(darkglow-button) {
-        margin: 0;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-      }
-
-      ::slotted(darkglow-button:hover) {
-        transform: translateY(-2px);
-        filter: brightness(1.2);
       }
     `;
 
     this.shadowRoot.innerHTML = `
-      <style>${styles}</style>
+      <style>
+        ${styles}
+        ${dynamicStyles}
+      </style>
       <div class="button-group ${this.orientation}">
         <slot></slot>
       </div>
