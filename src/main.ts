@@ -7,6 +7,7 @@ import TypographyComponent from './components/atoms/typography';
 import KnobComponent from './components/atoms/knob';
 import PadComponent from './components/atoms/pad';
 import FaderComponent from './components/atoms/fader';
+import GridComponent from './components/atoms/grid';
 
 customElements.define('darkglow-button', ButtonComponent);
 customElements.define('darkglow-layout', LayoutComponent);
@@ -17,3 +18,4 @@ customElements.define('darkglow-typography', TypographyComponent);
 customElements.define('darkglow-knob', KnobComponent);
 customElements.define('darkglow-pad', PadComponent);
 customElements.define('darkglow-fader', FaderComponent);
+customElements.define('darkglow-grid', GridComponent);
