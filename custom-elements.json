@@ -1,0 +1,77 @@
+{
+  "tags": [
+    {
+      "name": "darkglow-layout",
+      "description": "Componente de maquetado con cabecera, área principal y pie de página.",
+      "attributes": [
+        {
+          "name": "title",
+          "description": "Título de la página.",
+          "type": "string",
+          "default": "Darkglow UI"
+        }
+      ],
+      "slots": [
+        {"name": "header", "description": "Contenido para la cabecera."},
+        {"name": "", "description": "Contenido principal."},
+        {"name": "footer", "description": "Contenido del pie de página."}
+      ],
+      "events": [],
+      "cssProperties": [],
+      "cssParts": []
+    },
+    {
+      "name": "darkglow-container",
+      "description": "Contenedor con padding y estilo consistente.",
+      "attributes": [],
+      "slots": [
+        {"name": "", "description": "Contenido a mostrar dentro del contenedor."}
+      ],
+      "events": [],
+      "cssProperties": [],
+      "cssParts": []
+    },
+    {
+      "name": "darkglow-grid",
+      "description": "Cuadrícula para organizar elementos en filas y columnas.",
+      "attributes": [
+        {
+          "name": "columns",
+          "description": "Número de columnas.",
+          "type": "string",
+          "default": "4"
+        },
+        {
+          "name": "gap",
+          "description": "Separación entre elementos.",
+          "type": "string",
+          "default": "10px"
+        },
+        {
+          "name": "max-width",
+          "description": "Ancho máximo de la cuadrícula.",
+          "type": "string",
+          "default": "none"
+        },
+        {
+          "name": "align",
+          "description": "Alineación del contenido: `start`, `center` o `end`.",
+          "type": "string",
+          "default": "center"
+        },
+        {
+          "name": "variant",
+          "description": "Variante visual (primary, secondary, danger, accent, outlined, default).",
+          "type": "string",
+          "default": "default"
+        }
+      ],
+      "slots": [
+        {"name": "", "description": "Elementos de la cuadrícula."}
+      ],
+      "events": [],
+      "cssProperties": [],
+      "cssParts": []
+    }
+  ]
+}
