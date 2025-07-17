@@ -18,7 +18,7 @@ html, body {
     height: 100%;
     width: 100%;
     overflow: hidden;
-    background: linear-gradient(to bottom, #0d0221, #1a0b2e);
+    background: linear-gradient(to bottom, var(--color-black), var(--color-dark));
     background-attachment: fixed;
 }
 
@@ -33,14 +33,15 @@ html, body {
     --color-gray-light: #cccccc;
 
     /* Synthwave Neon Colors */
+    /* Reduced glow to improve readability on iOS */
     --color-primary: #ff00ff; /* Magenta */
-    --color-primary-glow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff;
+    --color-primary-glow: 0 0 5px #ff00ff, 0 0 10px #ff00ff, 0 0 15px #ff00ff;
     --color-secondary: #00ffff; /* Cyan */
-    --color-secondary-glow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff;
+    --color-secondary-glow: 0 0 5px #00ffff, 0 0 10px #00ffff, 0 0 15px #00ffff;
     --color-danger: #ff2b6d; /* Hot pink */
-    --color-danger-glow: 0 0 10px #ff2b6d, 0 0 20px #ff2b6d, 0 0 30px #ff2b6d;
+    --color-danger-glow: 0 0 5px #ff2b6d, 0 0 10px #ff2b6d, 0 0 15px #ff2b6d;
     --color-accent: #f9c80e; /* Yellow */
-    --color-accent-glow: 0 0 10px #f9c80e, 0 0 20px #f9c80e, 0 0 30px #f9c80e;
+    --color-accent-glow: 0 0 5px #f9c80e, 0 0 10px #f9c80e, 0 0 15px #f9c80e;
 
     /* Spacing */
     --spacing-xs: 0.5rem;
