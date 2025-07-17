@@ -13,6 +13,18 @@
     "isolatedModules": true,
     "noEmit": true,
 
+    /* Path aliases for better imports */
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@components/*": ["src/components/*"],
+      "@atoms/*": ["src/components/atoms/*"],
+      "@molecules/*": ["src/components/molecules/*"],
+      "@templates/*": ["src/components/templates/*"],
+      "@base/*": ["src/components/base/*"],
+      "@types/*": ["src/types/*"]
+    },
+
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,

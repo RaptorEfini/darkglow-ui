@@ -1,25 +1,22 @@
 import styles from './styles.css?inline';
+import { BaseComponent } from '../../base/BaseComponent';
+import { DEFAULT_FADER_PROPS, FaderProps } from './types';
 
-class FaderComponent extends HTMLElement {
+class FaderComponent extends BaseComponent {
   static get observedAttributes() {
     return ['value', 'min', 'max', 'disabled', 'variant', 'orientation'];
   }
 
-  private _value: number = 50;
-  private _min: number = 0;
-  private _max: number = 100;
+  private _props: FaderProps = { ...DEFAULT_FADER_PROPS };
   private _isDragging: boolean = false;
   private _startY: number = 0;
   private _startX: number = 0;
   private _faderElement: HTMLElement | null = null;
   private _handleElement: HTMLElement | null = null;
   private _valueDisplay: HTMLElement | null = null;
-  private _sensitivity: number = 1;
 
   constructor() {
     super();
-    this.attachShadow({ mode: 'open' });
-    this.render();
   }
 
   connectedCallback() {
@@ -47,72 +44,82 @@ class FaderComponent extends HTMLElement {
 
     switch (name) {
       case 'value':
-        // Use isNaN to check if the value is not a number, instead of using || which treats 0 as falsy
-        this._value = isNaN(Number(newValue)) ? 50 : Number(newValue);
+        this._props.value = isNaN(Number(newValue)) ? DEFAULT_FADER_PROPS.value : Number(newValue);
         this.updateFaderPosition();
         break;
       case 'min':
-        this._min = isNaN(Number(newValue)) ? 0 : Number(newValue);
+        this._props.min = isNaN(Number(newValue)) ? DEFAULT_FADER_PROPS.min : Number(newValue);
         this.updateFaderPosition();
         break;
       case 'max':
-        this._max = isNaN(Number(newValue)) ? 100 : Number(newValue);
+        this._props.max = isNaN(Number(newValue)) ? DEFAULT_FADER_PROPS.max : Number(newValue);
         this.updateFaderPosition();
         break;
       case 'disabled':
+        this._props.disabled = this.getBooleanAttribute('disabled');
+        this.render();
+        break;
       case 'variant':
+        this._props.variant = this.getStringAttribute('variant', DEFAULT_FADER_PROPS.variant) as FaderProps['variant'];
+        this.render();
+        break;
       case 'orientation':
+        this._props.orientation = this.getStringAttribute('orientation', DEFAULT_FADER_PROPS.orientation) as FaderProps['orientation'];
         this.render();
         break;
     }
   }
 
-  get value() {
-    return this._value;
+  get value(): number {
+    return this._props.value;
   }
 
   set value(val: number) {
-    const newValue = Math.min(Math.max(val, this._min), this._max);
-    if (newValue !== this._value) {
-      this._value = newValue;
+    const newValue = Math.min(Math.max(val, this._props.min), this._props.max);
+    if (newValue !== this._props.value) {
+      this._props.value = newValue;
       this.setAttribute('value', String(newValue));
       this.updateFaderPosition();
-      this.dispatchEvent(new CustomEvent('change', {
-        bubbles: true,
-        composed: true,
-        detail: { value: this._value }
-      }));
+      this.dispatchCustomEvent('change', { value: this._props.value });
     }
   }
 
-  get min() {
-    return this._min;
+  get min(): number {
+    return this._props.min;
   }
 
   set min(val: number) {
-    this._min = val;
+    this._props.min = val;
     this.setAttribute('min', String(val));
   }
 
-  get max() {
-    return this._max;
+  get max(): number {
+    return this._props.max;
   }
 
   set max(val: number) {
-    this._max = val;
+    this._props.max = val;
     this.setAttribute('max', String(val));
   }
 
-  get disabled() {
-    return this.hasAttribute('disabled');
+  get disabled(): boolean {
+    return this._props.disabled;
   }
 
-  get variant() {
-    return this.getAttribute('variant') || 'primary';
+  get variant(): FaderProps['variant'] {
+    return this._props.variant;
   }
 
-  get orientation() {
-    return this.getAttribute('orientation') || 'vertical';
+  get orientation(): FaderProps['orientation'] {
+    return this._props.orientation;
+  }
+  
+  get sensitivity(): number {
+    return this._props.sensitivity;
+  }
+  
+  set sensitivity(val: number) {
+    this._props.sensitivity = val;
   }
 
   handleMouseDown = (e: MouseEvent) => {
@@ -130,20 +137,20 @@ class FaderComponent extends HTMLElement {
   handleMouseMove = (e: MouseEvent) => {
     if (!this._isDragging) return;
 
-    const range = this._max - this._min;
+    const range = this._props.max - this._props.min;
     let valueChange;
 
     if (this.orientation === 'horizontal') {
       const deltaX = e.clientX - this._startX;
-      valueChange = deltaX * this._sensitivity * (range / 100);
+      valueChange = deltaX * this._props.sensitivity * (range / 100);
       this._startX = e.clientX;
     } else {
       const deltaY = this._startY - e.clientY;
-      valueChange = deltaY * this._sensitivity * (range / 100);
+      valueChange = deltaY * this._props.sensitivity * (range / 100);
       this._startY = e.clientY;
     }
 
-    this.value = this._value + valueChange;
+    this.value = this._props.value + valueChange;
   }
 
   handleMouseUp = () => {
@@ -161,14 +168,14 @@ class FaderComponent extends HTMLElement {
     const direction = this.orientation === 'horizontal' 
       ? (e.deltaY > 0 ? 1 : -1) 
       : (e.deltaY > 0 ? -1 : 1);
-    const step = (this._max - this._min) / 100;
-    this.value = this._value + (direction * step * 5);
+    const step = (this._props.max - this._props.min) / 100;
+    this.value = this._props.value + (direction * step * 5);
   }
 
   updateFaderPosition() {
     if (!this._handleElement || !this._valueDisplay) return;
 
-    const percentage = ((this._value - this._min) / (this._max - this._min)) * 100;
+    const percentage = ((this._props.value - this._props.min) / (this._props.max - this._props.min)) * 100;
 
     if (this.orientation === 'horizontal') {
       this._handleElement.style.left = `${percentage}%`;
@@ -182,7 +189,7 @@ class FaderComponent extends HTMLElement {
       this._handleElement.style.transform = 'translateX(-50%)';
     }
 
-    this._valueDisplay.textContent = Math.round(this._value).toString();
+    this._valueDisplay.textContent = Math.round(this._props.value).toString();
   }
 
   render() {

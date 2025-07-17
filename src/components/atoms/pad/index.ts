@@ -85,7 +85,7 @@ class PadComponent extends HTMLElement {
     return this.getAttribute('size') || 'default';
   }
 
-  handleClick = (e: MouseEvent) => {
+  handleClick = (_e: MouseEvent) => {
     if (this.disabled) return;
 
     this.dispatchEvent(new CustomEvent('pad-click', {
@@ -95,12 +95,12 @@ class PadComponent extends HTMLElement {
     }));
   }
 
-  handleMouseDown = (e: MouseEvent) => {
+  handleMouseDown = (_e: MouseEvent) => {
     if (this.disabled) return;
     this._padElement?.classList.add('pressed');
   }
 
-  handleMouseUp = (e: MouseEvent) => {
+  handleMouseUp = (_e: MouseEvent) => {
     if (this.disabled) return;
     this._padElement?.classList.remove('pressed');
   }

@@ -112,6 +112,20 @@ my-project/
 - Modern browser with Web Components support
 - No additional dependencies required
 
+## Development
+
+### TypeScript Implementation
+
+This project uses TypeScript for type safety and better developer experience. The TypeScript implementation has been optimized for scalability with:
+
+- A base component class for code reuse
+- Centralized type system
+- Component registry for easier management
+- Path aliases for better imports
+- Component-specific type definitions
+
+For more details on the TypeScript implementation, see [TYPESCRIPT.md](./TYPESCRIPT.md).
+
 ## Customization
 
 You can customize the component prefix when registering the components:

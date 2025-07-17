@@ -19,7 +19,7 @@ class ButtonComponent extends HTMLElement {
     this.removeEventListener('click', this.handleClick);
   }
 
-  attributeChangedCallback(name: string, oldValue: string, newValue: string) {
+  attributeChangedCallback(_name: string, oldValue: string, newValue: string) {
     if (oldValue !== newValue) {
       this.render();
     }

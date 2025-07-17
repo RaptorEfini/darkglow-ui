@@ -11,7 +11,7 @@ class TypographyComponent extends HTMLElement {
     this.render();
   }
 
-  attributeChangedCallback(name: string, oldValue: string, newValue: string) {
+  attributeChangedCallback(_name: string, oldValue: string, newValue: string) {
     if (oldValue !== newValue) {
       this.render();
     }
