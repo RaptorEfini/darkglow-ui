@@ -71,6 +71,21 @@ class ComponentRegistry {
   }
 
   /**
+   * Resolve the final custom element tag name for a registered component
+   * @param name The component registry key
+   */
+  resolveTagName(name: string): string | undefined {
+    const definition = this._components.get(name);
+    if (!definition) {
+      return undefined;
+    }
+
+    return definition.usePrefix !== false
+      ? `${this._prefix}-${definition.tagName}`
+      : definition.tagName;
+  }
+
+  /**
    * Get all registered component definitions
    */
   getAllComponents(): Map<string, ComponentDefinition> {

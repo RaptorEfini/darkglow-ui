@@ -22,6 +22,7 @@ import { Apc40ClipLaunch } from '@molecules/apc40-clip-launch';
 
 // Import registry
 import { componentRegistry, ComponentDefinition } from '@components/registry';
+export type { AlertOpenOptions, AlertResult } from '@atoms/alert';
 
 // Export components
 export { 

@@ -1,11 +1,122 @@
 import { html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { DarkglowElement } from '@base/DarkglowElement';
+import { componentRegistry } from '@components/registry';
 import '@atoms/modal';
 import styles from './styles';
 
+export interface AlertOpenOptions {
+  title?: string;
+  message?: string;
+  confirmText?: string;
+  cancelText?: string;
+  showCancel?: boolean;
+  variant?: 'primary' | 'secondary' | 'accent' | 'danger';
+  eyebrow?: string;
+  icon?: string;
+  closeOnBackdrop?: boolean;
+  closeOnEscape?: boolean;
+  hideClose?: boolean;
+}
+
+export interface AlertResult {
+  isConfirmed: boolean;
+  isDismissed: boolean;
+  action: 'confirm' | 'cancel' | 'close';
+  reason: 'confirm' | 'cancel' | 'backdrop' | 'escape' | 'close-button';
+}
+
 class AlertComponent extends DarkglowElement {
   static styles = styles;
+
+  static open(options: AlertOpenOptions = {}) {
+    componentRegistry.defineAll(componentRegistry.getPrefix());
+    const tagName = componentRegistry.resolveTagName('alert');
+
+    if (!tagName) {
+      return Promise.reject(new Error('Alert component is not registered.'));
+    }
+
+    const element = document.createElement(tagName) as AlertComponent;
+    Object.assign(element, {
+      ...options,
+      open: true
+    });
+
+    return new Promise<AlertResult>((resolve) => {
+      const cleanup = (result: AlertResult) => {
+        element.removeEventListener('confirm', handleConfirm as EventListener);
+        element.removeEventListener('cancel', handleCancel as EventListener);
+        element.removeEventListener('close', handleClose as EventListener);
+        element.remove();
+        resolve(result);
+      };
+
+      const handleConfirm = () => {
+        cleanup({
+          isConfirmed: true,
+          isDismissed: false,
+          action: 'confirm',
+          reason: 'confirm'
+        });
+      };
+
+      const handleCancel = () => {
+        cleanup({
+          isConfirmed: false,
+          isDismissed: true,
+          action: 'cancel',
+          reason: 'cancel'
+        });
+      };
+
+      const handleClose = (event: CustomEvent<{ reason: AlertResult['reason'] }>) => {
+        cleanup({
+          isConfirmed: false,
+          isDismissed: true,
+          action: 'close',
+          reason: event.detail.reason
+        });
+      };
+
+      element.addEventListener('confirm', handleConfirm as EventListener, { once: true });
+      element.addEventListener('cancel', handleCancel as EventListener, { once: true });
+      element.addEventListener('close', handleClose as EventListener, { once: true });
+      document.body.appendChild(element);
+    });
+  }
+
+  static success(options: AlertOpenOptions = {}) {
+    return this.open({
+      confirmText: 'OK',
+      eyebrow: 'Status Update',
+      icon: 'OK',
+      variant: 'secondary',
+      ...options
+    });
+  }
+
+  static error(options: AlertOpenOptions = {}) {
+    return this.open({
+      confirmText: 'Understood',
+      eyebrow: 'Critical Alert',
+      icon: '!',
+      variant: 'danger',
+      ...options
+    });
+  }
+
+  static confirm(options: AlertOpenOptions = {}) {
+    return this.open({
+      cancelText: 'Cancel',
+      confirmText: 'Confirm',
+      eyebrow: 'Confirmation Required',
+      icon: '?',
+      showCancel: true,
+      variant: 'accent',
+      ...options
+    });
+  }
 
   @property({ type: Boolean, reflect: true })
   open = false;
@@ -34,6 +145,15 @@ class AlertComponent extends DarkglowElement {
   @property({ type: String, reflect: true })
   icon = '!';
 
+  @property({ type: Boolean, attribute: 'close-on-backdrop', reflect: true })
+  closeOnBackdrop = true;
+
+  @property({ type: Boolean, attribute: 'close-on-escape', reflect: true })
+  closeOnEscape = true;
+
+  @property({ type: Boolean, attribute: 'hide-close', reflect: true })
+  hideClose = false;
+
   private handleClose(event: CustomEvent<{ reason: string }>) {
     this.open = false;
     this.emit('close', event.detail);
@@ -59,7 +179,9 @@ class AlertComponent extends DarkglowElement {
         .title=${this.title}
         .eyebrow=${this.eyebrow}
         .variant=${this.variant}
-        ?hide-close=${false}
+        ?close-on-backdrop=${this.closeOnBackdrop}
+        ?close-on-escape=${this.closeOnEscape}
+        ?hide-close=${this.hideClose}
         @close=${this.handleClose}
       >
         <div class="alert">

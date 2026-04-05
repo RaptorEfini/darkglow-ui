@@ -164,3 +164,25 @@ registerComponents('custom');
 ```
 
 This would change the component names to `custom-button`, `custom-card`, etc.
+
+## Imperative Alerts
+
+You can also open alerts programmatically:
+
+```javascript
+import { AlertComponent, registerComponents } from './path/to/darkglow/darkglow.js';
+
+registerComponents();
+
+const result = await AlertComponent.confirm({
+  title: 'Delete Preset',
+  message: 'This will permanently remove the synth preset from the live rack.',
+  confirmText: 'Delete',
+  cancelText: 'Keep',
+  variant: 'danger'
+});
+
+if (result.isConfirmed) {
+  console.log('Confirmed');
+}
+```
