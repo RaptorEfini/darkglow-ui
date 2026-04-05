@@ -4,13 +4,18 @@
 
 .fader-container {
   display: flex;
+  flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
   user-select: none;
 }
 
 .fader-wrapper {
   position: relative;
-  margin: 10px 0;
+  width: var(--fader-width);
+  height: var(--fader-height);
+  margin: 10px 0 0;
 }
 
 .fader-track {
@@ -54,20 +59,20 @@
 }
 
 .value-display {
-  margin-top: 8px;
   font-family: "Orbitron", sans-serif;
   font-size: 14px;
   color: var(--indicator-color);
   text-shadow: 0 0 5px var(--indicator-color);
+  min-height: 1em;
 }
 
 .label {
-  margin-top: 4px;
   font-family: "Orbitron", sans-serif;
   font-size: 12px;
   color: var(--color-white);
   text-transform: uppercase;
   letter-spacing: 1px;
+  text-align: center;
 }
 
 /* Tick marks along the fader */

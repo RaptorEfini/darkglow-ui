@@ -49,14 +49,18 @@ class TypographyComponent extends DarkglowElement {
 
     const spread = Number.isFinite(this.glowSpread) ? Math.max(this.glowSpread, 0) : 1;
     const glowColor = this.getGlowColor();
-    const blurA = `${Math.round(5 * spread)}px`;
-    const blurB = `${Math.round(10 * spread)}px`;
-    const blurC = `${Math.round(15 * spread)}px`;
+    const blurA = `${Math.max(1, Math.round(2 * spread))}px`;
+    const blurB = `${Math.max(2, Math.round(6 * spread))}px`;
+    const blurC = `${Math.max(4, Math.round(12 * spread))}px`;
+    const glowStrong = `color-mix(in srgb, ${glowColor} 72%, transparent)`;
+    const glowMid = `color-mix(in srgb, ${glowColor} 42%, transparent)`;
+    const glowSoft = `color-mix(in srgb, ${glowColor} 18%, transparent)`;
+    const hoverGlow = `color-mix(in srgb, ${glowColor} 55%, transparent)`;
 
     return styleMap({
       '--typography-glow-color': glowColor,
-      '--typography-glow-shadow': `0 0 ${blurA} ${glowColor}, 0 0 ${blurB} ${glowColor}, 0 0 ${blurC} ${glowColor}`,
-      '--typography-glow-hover': `0 0 ${Math.round(15 * spread)}px ${glowColor}`
+      '--typography-glow-shadow': `0 0 ${blurA} ${glowStrong}, 0 0 ${blurB} ${glowMid}, 0 0 ${blurC} ${glowSoft}`,
+      '--typography-glow-hover': `0 0 ${Math.max(4, Math.round(10 * spread))}px ${hoverGlow}`
     });
   }
 

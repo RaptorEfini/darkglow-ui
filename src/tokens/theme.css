@@ -18,12 +18,16 @@
   --color-gray-light: #cccccc;
 
   --color-primary: #ff00ff;
+  --color-primary-text: #ffd6ff;
   --color-primary-glow: 0 0 5px #ff00ff, 0 0 10px #ff00ff, 0 0 15px #ff00ff;
   --color-secondary: #00ffff;
+  --color-secondary-text: #d9ffff;
   --color-secondary-glow: 0 0 5px #00ffff, 0 0 10px #00ffff, 0 0 15px #00ffff;
   --color-danger: #ff2b6d;
+  --color-danger-text: #ffd9e5;
   --color-danger-glow: 0 0 5px #ff2b6d, 0 0 10px #ff2b6d, 0 0 15px #ff2b6d;
   --color-accent: #f9c80e;
+  --color-accent-text: #fff4bf;
   --color-accent-glow: 0 0 5px #f9c80e, 0 0 10px #f9c80e, 0 0 15px #f9c80e;
 
   --spacing-xs: 0.5rem;
