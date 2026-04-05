@@ -12,6 +12,21 @@ const config: StorybookConfig = {
   "framework": {
     "name": "@storybook/web-components-vite",
     "options": {}
+  },
+  async viteFinal(config) {
+    config.server = config.server ?? {};
+    config.server.watch = {
+      ...(config.server.watch ?? {}),
+      ignored: [
+        '**/.git/**',
+        '**/dist/**',
+        '**/storybook-static/**',
+        '**/node_modules/**',
+        '**/public/fonts/**'
+      ]
+    };
+
+    return config;
   }
 };
 export default config;

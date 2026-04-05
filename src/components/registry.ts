@@ -53,8 +53,10 @@ class ComponentRegistry {
         : definition.tagName;
       
       // Only register if not already registered
-      if (!this._registeredComponents.has(finalTagName)) {
+      if (!this._registeredComponents.has(finalTagName) && !customElements.get(finalTagName)) {
         customElements.define(finalTagName, definition.component);
+        this._registeredComponents.add(finalTagName);
+      } else if (customElements.get(finalTagName)) {
         this._registeredComponents.add(finalTagName);
       }
     });

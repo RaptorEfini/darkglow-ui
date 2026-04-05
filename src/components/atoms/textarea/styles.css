@@ -1,0 +1,84 @@
+:host {
+  display: inline-block;
+  width: min(100%, 420px);
+}
+
+.textarea-shell {
+  position: relative;
+  width: 100%;
+}
+
+.textarea-shell::before,
+.textarea-shell::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+}
+
+.textarea-shell::before {
+  inset: 0;
+  border: 1px solid color-mix(in srgb, var(--control-accent, var(--color-primary)) 30%, transparent);
+  clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
+}
+
+.textarea-shell::after {
+  inset: -12px;
+  background: radial-gradient(circle at 20% 10%, color-mix(in srgb, var(--control-accent, var(--color-primary)) 18%, transparent), transparent 45%);
+  filter: blur(14px);
+  opacity: 0.75;
+}
+
+.textarea {
+  width: 100%;
+  min-height: 140px;
+  box-sizing: border-box;
+  resize: vertical;
+  border: 1px solid transparent;
+  outline: none;
+  padding: 1rem;
+  background:
+    linear-gradient(180deg, rgba(36, 23, 52, 0.98), rgba(13, 2, 33, 0.96)),
+    repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.025) 0 1px, transparent 1px 22px);
+  color: var(--color-white);
+  font-family: "Raleway", sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--control-accent, var(--color-primary)) 16%, transparent),
+    0 0 22px color-mix(in srgb, var(--control-accent, var(--color-primary)) 16%, transparent);
+  transition: box-shadow 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+}
+
+.textarea::placeholder {
+  color: color-mix(in srgb, var(--color-white) 42%, transparent);
+}
+
+.textarea:focus {
+  border-color: color-mix(in srgb, var(--control-accent, var(--color-primary)) 44%, transparent);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--control-accent, var(--color-primary)) 32%, transparent),
+    0 0 28px color-mix(in srgb, var(--control-accent, var(--color-primary)) 30%, transparent);
+  transform: translateY(-1px);
+}
+
+.textarea:disabled {
+  opacity: 0.58;
+  cursor: not-allowed;
+}
+
+:host([invalid]) {
+  --control-accent: var(--color-danger);
+}
+
+:host([variant="secondary"]) {
+  --control-accent: var(--color-secondary);
+}
+
+:host([variant="accent"]) {
+  --control-accent: var(--color-accent);
+}
+
+:host([variant="danger"]) {
+  --control-accent: var(--color-danger);
+}

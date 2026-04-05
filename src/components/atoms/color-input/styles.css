@@ -1,0 +1,138 @@
+:host {
+  display: inline-block;
+  width: min(100%, 360px);
+}
+
+.color-input {
+  position: relative;
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: 0.9rem;
+  align-items: center;
+  padding: 0.8rem;
+  background:
+    linear-gradient(180deg, rgba(36, 23, 52, 0.98), rgba(13, 2, 33, 0.96)),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.03) 0 1px, transparent 1px 18px);
+  clip-path: polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--control-accent, var(--color-primary)) 20%, transparent),
+    0 0 24px color-mix(in srgb, var(--control-accent, var(--color-primary)) 14%, transparent);
+}
+
+.color-input::before,
+.color-input::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+}
+
+.color-input::before {
+  inset: 0;
+  border: 1px solid color-mix(in srgb, var(--control-accent, var(--color-primary)) 34%, transparent);
+  clip-path: inherit;
+}
+
+.color-input::after {
+  inset: -10px;
+  background:
+    radial-gradient(circle at left center, color-mix(in srgb, var(--current-color, var(--color-primary)) 26%, transparent), transparent 42%),
+    radial-gradient(circle at right center, color-mix(in srgb, var(--control-accent, var(--color-primary)) 20%, transparent), transparent 46%);
+  filter: blur(14px);
+  opacity: 0.82;
+}
+
+.picker {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  border: 0;
+  outline: none;
+  padding: 0;
+  cursor: pointer;
+  background: transparent;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--control-accent, var(--color-primary)) 35%, transparent),
+    0 0 18px color-mix(in srgb, var(--current-color, var(--color-primary)) 28%, transparent);
+}
+
+.picker::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.picker::-webkit-color-swatch {
+  border: none;
+  border-radius: 10px;
+}
+
+.picker::-moz-color-swatch {
+  border: none;
+  border-radius: 10px;
+}
+
+.info {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 0.3rem;
+  min-width: 0;
+}
+
+.eyebrow {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--control-accent, var(--color-primary)) 82%, white 18%);
+}
+
+.value {
+  font-family: "Orbitron", sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  color: var(--color-white);
+  text-shadow: 0 0 10px color-mix(in srgb, var(--current-color, var(--color-primary)) 30%, transparent);
+}
+
+.channels {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  color: var(--color-gray-light);
+  font-size: 0.8rem;
+}
+
+.channel {
+  padding: 0.18rem 0.45rem;
+  border: 1px solid color-mix(in srgb, var(--control-accent, var(--color-primary)) 24%, transparent);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.color-input:focus-within {
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--control-accent, var(--color-primary)) 30%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--control-accent, var(--color-primary)) 32%, transparent),
+    0 0 28px color-mix(in srgb, var(--current-color, var(--color-primary)) 26%, transparent);
+  transform: translateY(-1px);
+}
+
+:host([disabled]) .color-input {
+  opacity: 0.58;
+}
+
+:host([disabled]) .picker {
+  cursor: not-allowed;
+}
+
+:host([variant="secondary"]) {
+  --control-accent: var(--color-secondary);
+}
+
+:host([variant="accent"]) {
+  --control-accent: var(--color-accent);
+}
+
+:host([variant="danger"]) {
+  --control-accent: var(--color-danger);
+}

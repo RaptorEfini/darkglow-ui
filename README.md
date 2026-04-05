@@ -69,6 +69,20 @@ Now you can use the components in your HTML:
     <darkglow-button variant="secondary">Secondary</darkglow-button>
     <darkglow-button variant="danger">Danger</darkglow-button>
     <darkglow-button variant="ghost">Ghost</darkglow-button>
+
+    <h2>Forms</h2>
+    <darkglow-field label="Pilot Name" hint="Visible in the control panel">
+      <darkglow-input placeholder="Nova Unit"></darkglow-input>
+    </darkglow-field>
+    <darkglow-field label="Shift">
+      <darkglow-select value="night">
+        <option value="day">Day</option>
+        <option value="night" selected>Night</option>
+      </darkglow-select>
+    </darkglow-field>
+    <darkglow-field label="Accent Color">
+      <darkglow-color-input value="#f9c80e"></darkglow-color-input>
+    </darkglow-field>
   </darkglow-container>
   <div slot="footer">Footer Content</div>
 </darkglow-layout>
@@ -81,11 +95,16 @@ The following components are available:
 - `darkglow-button` - Button component
 - `darkglow-button-group` - Button group component
 - `darkglow-card` - Card component
+- `darkglow-color-input` - RGB color picker with live channel readout
 - `darkglow-container` - Container component
+- `darkglow-field` - Form field wrapper with label, hint and error states
 - `darkglow-fader` - Fader component
 - `darkglow-grid` - Grid component
+- `darkglow-input` - Text input component
 - `darkglow-knob` - Knob component
 - `darkglow-pad` - Pad component
+- `darkglow-select` - Select component
+- `darkglow-textarea` - Textarea component
 - `darkglow-typography` - Typography component
 - `darkglow-layout` - Layout component
 

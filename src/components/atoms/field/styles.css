@@ -1,0 +1,77 @@
+:host {
+  display: block;
+}
+
+.field {
+  display: grid;
+  gap: 0.5rem;
+  width: 100%;
+  text-align: left;
+}
+
+.field-header,
+.field-footer {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.label {
+  margin: 0;
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--field-label-color, var(--color-secondary));
+  text-shadow: 0 0 8px color-mix(in srgb, var(--field-label-color, var(--color-secondary)) 45%, transparent);
+}
+
+.required {
+  color: var(--color-danger);
+}
+
+.control {
+  position: relative;
+}
+
+.control::before {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--field-accent, var(--color-primary)) 14%, transparent), transparent 55%),
+    radial-gradient(circle at top right, color-mix(in srgb, var(--field-accent, var(--color-primary)) 18%, transparent), transparent 55%);
+  filter: blur(10px);
+  opacity: 0.7;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.control ::slotted(*) {
+  position: relative;
+  z-index: 1;
+}
+
+.hint,
+.error {
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: var(--color-gray-light);
+}
+
+.error {
+  color: var(--color-danger-text);
+  text-shadow: 0 0 8px color-mix(in srgb, var(--color-danger) 35%, transparent);
+}
+
+:host([invalid]) .label {
+  color: var(--color-danger);
+}
+
+:host([invalid]) .control::before {
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--color-danger) 18%, transparent), transparent 55%),
+    radial-gradient(circle at top right, color-mix(in srgb, var(--color-danger) 20%, transparent), transparent 55%);
+}
