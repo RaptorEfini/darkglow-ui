@@ -1,6 +1,7 @@
 // Import components
 import ButtonComponent from '@atoms/button';
 import ButtonGroupComponent from '@atoms/button-group';
+import AlertComponent from '@atoms/alert';
 import CardComponent from '@atoms/card';
 import ColorInputComponent from '@atoms/color-input';
 import ContainerComponent from '@atoms/container';
@@ -9,6 +10,7 @@ import FaderComponent from '@atoms/fader';
 import GridComponent from '@atoms/grid';
 import InputComponent from '@atoms/input';
 import KnobComponent from '@atoms/knob';
+import ModalComponent from '@atoms/modal';
 import PadComponent from '@atoms/pad';
 import SelectComponent from '@atoms/select';
 import TextareaComponent from '@atoms/textarea';
@@ -23,6 +25,7 @@ import { componentRegistry, ComponentDefinition } from '@components/registry';
 
 // Export components
 export { 
+  AlertComponent,
   ButtonComponent,
   ButtonGroupComponent,
   CardComponent,
@@ -33,6 +36,7 @@ export {
   GridComponent,
   InputComponent,
   KnobComponent,
+  ModalComponent,
   PadComponent,
   SelectComponent,
   TextareaComponent,
@@ -43,6 +47,7 @@ export {
 // Register all components with the registry
 const components: Record<string, ComponentDefinition> = {
   // Atoms
+  alert: { component: AlertComponent, tagName: 'alert' },
   button: { component: ButtonComponent, tagName: 'button' },
   buttonGroup: { component: ButtonGroupComponent, tagName: 'button-group' },
   card: { component: CardComponent, tagName: 'card' },
@@ -53,6 +58,7 @@ const components: Record<string, ComponentDefinition> = {
   grid: { component: GridComponent, tagName: 'grid' },
   input: { component: InputComponent, tagName: 'input' },
   knob: { component: KnobComponent, tagName: 'knob' },
+  modal: { component: ModalComponent, tagName: 'modal' },
   pad: { component: PadComponent, tagName: 'pad' },
   select: { component: SelectComponent, tagName: 'select' },
   textarea: { component: TextareaComponent, tagName: 'textarea' },

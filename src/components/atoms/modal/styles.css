@@ -1,0 +1,149 @@
+:host {
+  display: contents;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+  background:
+    radial-gradient(circle at top, rgba(255, 0, 255, 0.14), transparent 38%),
+    radial-gradient(circle at bottom, rgba(0, 255, 255, 0.12), transparent 42%),
+    rgba(13, 2, 33, 0.76);
+  backdrop-filter: blur(12px);
+}
+
+.panel {
+  position: relative;
+  width: min(100%, 640px);
+  max-height: min(84vh, 720px);
+  overflow: auto;
+  color: var(--color-white);
+  background:
+    linear-gradient(180deg, rgba(36, 23, 52, 0.98), rgba(13, 2, 33, 0.97)),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.03) 0 1px, transparent 1px 24px);
+  clip-path: polygon(24px 0, 100% 0, 100% calc(100% - 24px), calc(100% - 24px) 100%, 0 100%, 0 24px);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--modal-accent, var(--color-primary)) 16%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--modal-accent, var(--color-primary)) 30%, transparent),
+    0 0 38px color-mix(in srgb, var(--modal-accent, var(--color-primary)) 24%, transparent);
+}
+
+.panel::before,
+.panel::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+}
+
+.panel::before {
+  inset: 0;
+  border: 1px solid color-mix(in srgb, var(--modal-accent, var(--color-primary)) 34%, transparent);
+  clip-path: inherit;
+}
+
+.panel::after {
+  inset: -16px;
+  background:
+    radial-gradient(circle at top left, color-mix(in srgb, var(--modal-accent, var(--color-primary)) 20%, transparent), transparent 42%),
+    radial-gradient(circle at bottom right, color-mix(in srgb, var(--modal-accent, var(--color-primary)) 14%, transparent), transparent 44%);
+  filter: blur(16px);
+  opacity: 0.9;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 1.25rem;
+  padding: 1.5rem;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.title-wrap {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.eyebrow {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--modal-accent, var(--color-primary)) 84%, white 16%);
+}
+
+.title {
+  margin: 0;
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(1.2rem, 2.4vw, 1.7rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-white);
+  text-shadow: 0 0 12px color-mix(in srgb, var(--modal-accent, var(--color-primary)) 28%, transparent);
+}
+
+.close {
+  flex: 0 0 auto;
+  width: 42px;
+  height: 42px;
+  border: 1px solid color-mix(in srgb, var(--modal-accent, var(--color-primary)) 36%, transparent);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--color-white);
+  cursor: pointer;
+  font-family: "Orbitron", sans-serif;
+  font-size: 1rem;
+  clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--modal-accent, var(--color-primary)) 18%, transparent);
+}
+
+.close:hover {
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--modal-accent, var(--color-primary)) 20%, transparent),
+    0 0 18px color-mix(in srgb, var(--modal-accent, var(--color-primary)) 28%, transparent);
+}
+
+.body {
+  display: grid;
+  gap: 1rem;
+  color: var(--color-gray-light);
+  line-height: 1.6;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+:host([variant="secondary"]) {
+  --modal-accent: var(--color-secondary);
+}
+
+:host([variant="accent"]) {
+  --modal-accent: var(--color-accent);
+}
+
+:host([variant="danger"]) {
+  --modal-accent: var(--color-danger);
+}
+
+@media (max-width: 640px) {
+  .overlay {
+    padding: 1rem;
+  }
+
+  .content {
+    padding: 1rem;
+  }
+}

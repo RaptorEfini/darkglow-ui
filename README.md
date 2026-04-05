@@ -83,6 +83,13 @@ Now you can use the components in your HTML:
     <darkglow-field label="Accent Color">
       <darkglow-color-input value="#f9c80e"></darkglow-color-input>
     </darkglow-field>
+    <darkglow-alert
+      open
+      title="Signal Calibrated"
+      message="RGB routing was applied successfully across all active channels."
+      confirmText="Perfect"
+      variant="secondary"
+    ></darkglow-alert>
   </darkglow-container>
   <div slot="footer">Footer Content</div>
 </darkglow-layout>
@@ -92,6 +99,7 @@ Now you can use the components in your HTML:
 
 The following components are available:
 
+- `darkglow-alert` - Sweet-alert style modal for confirmations and notifications
 - `darkglow-button` - Button component
 - `darkglow-button-group` - Button group component
 - `darkglow-card` - Card component
@@ -102,6 +110,7 @@ The following components are available:
 - `darkglow-grid` - Grid component
 - `darkglow-input` - Text input component
 - `darkglow-knob` - Knob component
+- `darkglow-modal` - Generic modal dialog with backdrop and slot-based actions
 - `darkglow-pad` - Pad component
 - `darkglow-select` - Select component
 - `darkglow-textarea` - Textarea component
