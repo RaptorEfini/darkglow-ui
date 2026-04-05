@@ -47,7 +47,7 @@ class ComponentRegistry {
       this._prefix = prefix;
     }
 
-    this._components.forEach((definition, name) => {
+    this._components.forEach((definition, _name) => {
       const finalTagName = definition.usePrefix !== false 
         ? `${this._prefix}-${definition.tagName}`
         : definition.tagName;

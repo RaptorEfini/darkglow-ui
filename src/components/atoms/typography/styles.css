@@ -15,7 +15,7 @@
   font-weight: 700;
   letter-spacing: 1px;
   color: var(--color-primary);
-  text-shadow: var(--color-primary-glow);
+  text-shadow: var(--typography-glow-shadow, var(--color-primary-glow));
 }
 
 .subtitle {
@@ -24,7 +24,7 @@
   font-weight: 600;
   letter-spacing: 0.5px;
   color: var(--color-secondary);
-  text-shadow: var(--color-secondary-glow);
+  text-shadow: var(--typography-glow-shadow, var(--color-secondary-glow));
 }
 
 .text {
@@ -38,22 +38,22 @@
 /* Variant styles */
 .primary {
   color: var(--color-primary);
-  text-shadow: var(--color-primary-glow);
+  text-shadow: var(--typography-glow-shadow, var(--color-primary-glow));
 }
 
 .secondary {
   color: var(--color-secondary);
-  text-shadow: var(--color-secondary-glow);
+  text-shadow: var(--typography-glow-shadow, var(--color-secondary-glow));
 }
 
 .danger {
   color: var(--color-danger);
-  text-shadow: var(--color-danger-glow);
+  text-shadow: var(--typography-glow-shadow, var(--color-danger-glow));
 }
 
 .accent {
   color: var(--color-accent);
-  text-shadow: var(--color-accent-glow);
+  text-shadow: var(--typography-glow-shadow, var(--color-accent-glow));
 }
 
 /* Light off (disabled) state */
@@ -74,5 +74,5 @@
 }
 
 .title:not(.light-off):hover, .subtitle:not(.light-off):hover {
-  text-shadow: 0 0 15px currentColor;
+  text-shadow: var(--typography-glow-hover, 0 0 15px currentColor);
 }

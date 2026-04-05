@@ -1,27 +1,12 @@
-import styles from './styles.css?inline';
+import { html } from 'lit';
+import { DarkglowElement } from '@base/DarkglowElement';
+import styles from './styles';
 
-class ContainerComponent extends HTMLElement {
-  static get observedAttributes() {
-    return [];
-  }
-
-  constructor() {
-    super();
-    this.attachShadow({ mode: 'open' });
-    this.render();
-  }
-
-  attributeChangedCallback(_name: string, oldValue: string, newValue: string) {
-    if (oldValue !== newValue) {
-      this.render();
-    }
-  }
+class ContainerComponent extends DarkglowElement {
+  static styles = styles;
 
   render() {
-    if (!this.shadowRoot) return;
-
-    this.shadowRoot.innerHTML = `
-      <style>${styles}</style>
+    return html`
       <div class="container">
         <div class="content">
           <slot></slot>

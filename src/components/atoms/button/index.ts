@@ -1,57 +1,33 @@
-import styles from './styles.css?inline';
+import { html } from 'lit';
+import { property } from 'lit/decorators.js';
+import { DarkglowElement } from '@base/DarkglowElement';
+import styles from './styles';
 
-class ButtonComponent extends HTMLElement {
-  static get observedAttributes() {
-    return ['variant', 'disabled'];
-  }
+class ButtonComponent extends DarkglowElement {
+  static styles = styles;
 
-  constructor() {
-    super();
-    this.attachShadow({ mode: 'open' });
-    this.render();
-  }
+  @property({ type: String, reflect: true })
+  variant = 'primary';
 
-  connectedCallback() {
-    this.addEventListener('click', this.handleClick);
-  }
+  @property({ type: Boolean, reflect: true })
+  disabled = false;
 
-  disconnectedCallback() {
-    this.removeEventListener('click', this.handleClick);
-  }
-
-  attributeChangedCallback(_name: string, oldValue: string, newValue: string) {
-    if (oldValue !== newValue) {
-      this.render();
-    }
-  }
-
-  handleClick = (event: Event) => {
-    if (this.disabled) {
-      event.preventDefault();
+  private handleClick(event: MouseEvent) {
+    if (!this.disabled) {
       return;
     }
 
-    // Dispatch a custom event that can be listened to
-    this.dispatchEvent(new CustomEvent('button-click', {
-      bubbles: true,
-      composed: true
-    }));
-  }
-
-  get variant() {
-    return this.getAttribute('variant') || 'primary';
-  }
-
-  get disabled() {
-    return this.hasAttribute('disabled');
+    event.preventDefault();
+    event.stopImmediatePropagation();
   }
 
   render() {
-    if (!this.shadowRoot) return;
-
-    this.shadowRoot.innerHTML = `
-      <style>${styles}</style>
-      <button class="button ${this.variant}" ${this.disabled ? 'disabled' : ''}>
+    return html`
+      <button
+        class="button ${this.variant}"
+        ?disabled=${this.disabled}
+        @click=${this.handleClick}
+      >
         <slot></slot>
       </button>
     `;

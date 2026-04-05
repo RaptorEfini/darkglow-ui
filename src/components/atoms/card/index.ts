@@ -1,50 +1,39 @@
-import styles from './styles.css?inline';
+import { css, html } from 'lit';
+import { styleMap } from 'lit/directives/style-map.js';
+import { property } from 'lit/decorators.js';
+import { DarkglowElement } from '@base/DarkglowElement';
+import styles from './styles';
 
-class CardComponent extends HTMLElement {
-  static get observedAttributes() {
-    return ['variant', 'elevated'];
-  }
+class CardComponent extends DarkglowElement {
+  static styles = [
+    styles,
+    css`
+      .card {
+        box-shadow: var(--card-shadow, var(--shadow-sm));
+      }
 
-  constructor() {
-    super();
-    this.attachShadow({ mode: 'open' });
-    this.render();
-  }
+      .card:hover {
+        box-shadow: var(--card-hover-shadow, var(--shadow-md));
+      }
+    `
+  ];
 
-  attributeChangedCallback(_name: string, oldValue: string, newValue: string) {
-    if (oldValue !== newValue) {
-      this.render();
-    }
-  }
+  @property({ type: String, reflect: true })
+  variant = 'default';
 
-  get variant() {
-    return this.getAttribute('variant') || 'default';
-  }
+  @property({ type: Boolean, reflect: true })
+  elevated = false;
 
-  get elevated() {
-    return this.hasAttribute('elevated');
+  private getShadowStyles() {
+    return {
+      '--card-shadow': this.elevated ? 'var(--shadow-lg)' : 'var(--shadow-sm)',
+      '--card-hover-shadow': this.elevated ? 'var(--shadow-xl)' : 'var(--shadow-md)'
+    };
   }
 
   render() {
-    if (!this.shadowRoot) return;
-
-    // Dynamic styles that depend on component properties
-    const dynamicStyles = `
-      .card {
-        ${this.elevated ? 'box-shadow: var(--shadow-lg);' : 'box-shadow: var(--shadow-sm);'}
-      }
-      
-      .card:hover {
-        ${this.elevated ? 'box-shadow: var(--shadow-xl);' : 'box-shadow: var(--shadow-md);'}
-      }
-    `;
-
-    this.shadowRoot.innerHTML = `
-      <style>
-        ${styles}
-        ${dynamicStyles}
-      </style>
-      <div class="card ${this.variant}">
+    return html`
+      <div class="card ${this.variant}" style=${styleMap(this.getShadowStyles())}>
         <div class="card-content">
           <slot></slot>
         </div>

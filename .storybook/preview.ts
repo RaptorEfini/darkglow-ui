@@ -1,6 +1,6 @@
 import type { Preview } from '@storybook/web-components-vite';
 import { registerComponents } from '../src/components';
-import '../public/style.css';
+import '../src/tokens/theme.css';
 
 registerComponents();
 

@@ -1,20 +1,87 @@
 {
+  "version": "custom-elements-manual-v1",
   "tags": [
     {
-      "name": "darkglow-layout",
-      "description": "Componente de maquetado con cabecera, área principal y pie de página.",
+      "name": "darkglow-button",
+      "description": "Boton interactivo con variantes visuales neon.",
       "attributes": [
         {
-          "name": "title",
-          "description": "Título de la página.",
+          "name": "variant",
+          "description": "Variante visual del boton.",
           "type": "string",
-          "default": "Darkglow UI"
+          "default": "primary"
+        },
+        {
+          "name": "disabled",
+          "description": "Deshabilita la interaccion del boton.",
+          "type": "boolean",
+          "default": "false"
         }
       ],
       "slots": [
-        {"name": "header", "description": "Contenido para la cabecera."},
-        {"name": "", "description": "Contenido principal."},
-        {"name": "footer", "description": "Contenido del pie de página."}
+        {
+          "name": "",
+          "description": "Contenido del boton."
+        }
+      ],
+      "events": [
+        {
+          "name": "click",
+          "description": "Evento nativo emitido al hacer click si no esta deshabilitado."
+        }
+      ],
+      "cssProperties": [],
+      "cssParts": []
+    },
+    {
+      "name": "darkglow-button-group",
+      "description": "Agrupa botones horizontal o verticalmente.",
+      "attributes": [
+        {
+          "name": "orientation",
+          "description": "Direccion del grupo: horizontal o vertical.",
+          "type": "string",
+          "default": "horizontal"
+        },
+        {
+          "name": "align",
+          "description": "Alineacion del contenido: start, center o end.",
+          "type": "string",
+          "default": "center"
+        }
+      ],
+      "slots": [
+        {
+          "name": "",
+          "description": "Botones o elementos agrupados."
+        }
+      ],
+      "events": [],
+      "cssProperties": [],
+      "cssParts": []
+    },
+    {
+      "name": "darkglow-card",
+      "description": "Contenedor visual con borde, glow y elevacion opcional.",
+      "attributes": [
+        {
+          "name": "variant",
+          "description": "Variante visual del card.",
+          "type": "string",
+          "default": "default"
+        },
+        {
+          "name": "elevated",
+          "description": "Aumenta la sombra base y hover.",
+          "type": "boolean",
+          "default": "false"
+        }
+      ],
+      "slots": [
+        {
+          "name": "",
+          "description": "Contenido del card."
+        }
       ],
       "events": [],
       "cssProperties": [],
@@ -22,10 +89,13 @@
     },
     {
       "name": "darkglow-container",
-      "description": "Contenedor con padding y estilo consistente.",
+      "description": "Contenedor de contenido con ancho y padding consistentes.",
       "attributes": [],
       "slots": [
-        {"name": "", "description": "Contenido a mostrar dentro del contenedor."}
+        {
+          "name": "",
+          "description": "Contenido interno."
+        }
       ],
       "events": [],
       "cssProperties": [],
@@ -33,43 +103,323 @@
     },
     {
       "name": "darkglow-grid",
-      "description": "Cuadrícula para organizar elementos en filas y columnas.",
+      "description": "Grid configurable para organizar elementos por columnas y gap.",
       "attributes": [
         {
           "name": "columns",
-          "description": "Número de columnas.",
+          "description": "Numero de columnas.",
           "type": "string",
           "default": "4"
         },
         {
           "name": "gap",
-          "description": "Separación entre elementos.",
+          "description": "Separacion entre elementos.",
           "type": "string",
           "default": "10px"
         },
         {
           "name": "max-width",
-          "description": "Ancho máximo de la cuadrícula.",
+          "description": "Ancho maximo del grid.",
           "type": "string",
           "default": "none"
         },
         {
           "name": "align",
-          "description": "Alineación del contenido: `start`, `center` o `end`.",
+          "description": "Alineacion del contenido: start, center o end.",
           "type": "string",
           "default": "center"
         },
         {
           "name": "variant",
-          "description": "Variante visual (primary, secondary, danger, accent, outlined, default).",
+          "description": "Variante visual del grid.",
           "type": "string",
           "default": "default"
         }
       ],
       "slots": [
-        {"name": "", "description": "Elementos de la cuadrícula."}
+        {
+          "name": "",
+          "description": "Elementos del grid."
+        }
       ],
       "events": [],
+      "cssProperties": [],
+      "cssParts": []
+    },
+    {
+      "name": "darkglow-typography",
+      "description": "Componente tipografico con glow configurable para titulos y subtitulos.",
+      "attributes": [
+        {
+          "name": "variant",
+          "description": "Variante cromatica del texto.",
+          "type": "string",
+          "default": "default"
+        },
+        {
+          "name": "type",
+          "description": "Tipo de texto: title, subtitle o text.",
+          "type": "string",
+          "default": "text"
+        },
+        {
+          "name": "light-off",
+          "description": "Reduce o apaga el glow.",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "glow-spread",
+          "description": "Multiplicador numerico del glow en title y subtitle.",
+          "type": "number",
+          "default": "1"
+        }
+      ],
+      "slots": [
+        {
+          "name": "",
+          "description": "Contenido textual."
+        }
+      ],
+      "events": [],
+      "cssProperties": [],
+      "cssParts": []
+    },
+    {
+      "name": "darkglow-layout",
+      "description": "Layout con header, main y footer que actualiza document.title.",
+      "attributes": [
+        {
+          "name": "title",
+          "description": "Titulo aplicado a document.title.",
+          "type": "string",
+          "default": "Darkglow UI"
+        }
+      ],
+      "slots": [
+        {
+          "name": "header",
+          "description": "Contenido de cabecera."
+        },
+        {
+          "name": "",
+          "description": "Contenido principal."
+        },
+        {
+          "name": "footer",
+          "description": "Contenido de pie de pagina."
+        }
+      ],
+      "events": [],
+      "cssProperties": [],
+      "cssParts": []
+    },
+    {
+      "name": "darkglow-pad",
+      "description": "Pad interactivo para disparo o seleccion.",
+      "attributes": [
+        {
+          "name": "number",
+          "description": "Identificador numerico del pad.",
+          "type": "number",
+          "default": "null"
+        },
+        {
+          "name": "variant",
+          "description": "Variante visual del pad.",
+          "type": "string",
+          "default": "primary"
+        },
+        {
+          "name": "active",
+          "description": "Activa el estado iluminado.",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "disabled",
+          "description": "Deshabilita la interaccion.",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "size",
+          "description": "Tamano visual del pad.",
+          "type": "string",
+          "default": "default"
+        }
+      ],
+      "slots": [
+        {
+          "name": "",
+          "description": "Etiqueta del pad."
+        }
+      ],
+      "events": [
+        {
+          "name": "click",
+          "description": "Evento nativo emitido al activar el pad."
+        }
+      ],
+      "cssProperties": [],
+      "cssParts": []
+    },
+    {
+      "name": "darkglow-knob",
+      "description": "Control rotatorio continuo con soporte de raton, rueda y teclado.",
+      "attributes": [
+        {
+          "name": "value",
+          "description": "Valor actual del knob.",
+          "type": "number",
+          "default": "50"
+        },
+        {
+          "name": "min",
+          "description": "Valor minimo.",
+          "type": "number",
+          "default": "0"
+        },
+        {
+          "name": "max",
+          "description": "Valor maximo.",
+          "type": "number",
+          "default": "100"
+        },
+        {
+          "name": "disabled",
+          "description": "Deshabilita la interaccion.",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "variant",
+          "description": "Variante visual del knob.",
+          "type": "string",
+          "default": "primary"
+        }
+      ],
+      "slots": [
+        {
+          "name": "",
+          "description": "Etiqueta del knob."
+        }
+      ],
+      "events": [
+        {
+          "name": "input",
+          "description": "Emitido durante la interaccion continua."
+        },
+        {
+          "name": "change",
+          "description": "Emitido al confirmar el valor."
+        }
+      ],
+      "cssProperties": [],
+      "cssParts": []
+    },
+    {
+      "name": "darkglow-fader",
+      "description": "Control lineal continuo vertical u horizontal.",
+      "attributes": [
+        {
+          "name": "value",
+          "description": "Valor actual del fader.",
+          "type": "number",
+          "default": "50"
+        },
+        {
+          "name": "min",
+          "description": "Valor minimo.",
+          "type": "number",
+          "default": "0"
+        },
+        {
+          "name": "max",
+          "description": "Valor maximo.",
+          "type": "number",
+          "default": "100"
+        },
+        {
+          "name": "disabled",
+          "description": "Deshabilita la interaccion.",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "variant",
+          "description": "Variante visual del fader.",
+          "type": "string",
+          "default": "primary"
+        },
+        {
+          "name": "orientation",
+          "description": "Orientacion del fader: vertical u horizontal.",
+          "type": "string",
+          "default": "vertical"
+        }
+      ],
+      "slots": [
+        {
+          "name": "",
+          "description": "Etiqueta del fader."
+        }
+      ],
+      "events": [
+        {
+          "name": "input",
+          "description": "Emitido durante la interaccion continua."
+        },
+        {
+          "name": "change",
+          "description": "Emitido al confirmar el valor."
+        }
+      ],
+      "cssProperties": [],
+      "cssParts": []
+    },
+    {
+      "name": "apc40-clip-launch",
+      "description": "Componente compuesto tipo APC40 con grid de pads y evento de disparo.",
+      "attributes": [
+        {
+          "name": "pad-count",
+          "description": "Cantidad total de pads renderizados.",
+          "type": "number",
+          "default": "40"
+        },
+        {
+          "name": "columns",
+          "description": "Columnas del grid.",
+          "type": "number",
+          "default": "8"
+        },
+        {
+          "name": "gap",
+          "description": "Separacion entre pads.",
+          "type": "string",
+          "default": "5px"
+        },
+        {
+          "name": "pad-variant",
+          "description": "Variante visual aplicada a los pads.",
+          "type": "string",
+          "default": "primary"
+        },
+        {
+          "name": "active-pads",
+          "description": "Lista CSV con pads activos, por ejemplo 1,5,9.",
+          "type": "string",
+          "default": ""
+        }
+      ],
+      "slots": [],
+      "events": [
+        {
+          "name": "pad-trigger",
+          "description": "Emitido cuando se activa uno de los pads."
+        }
+      ],
       "cssProperties": [],
       "cssParts": []
     }

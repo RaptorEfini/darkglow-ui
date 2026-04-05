@@ -1,70 +1,40 @@
-import styles from './styles.css?inline';
+import { html } from 'lit';
+import { styleMap } from 'lit/directives/style-map.js';
+import { property } from 'lit/decorators.js';
+import { DarkglowElement } from '@base/DarkglowElement';
+import styles from './styles';
 
-class ButtonGroupComponent extends HTMLElement {
-  static get observedAttributes() {
-    return ['orientation', 'align'];
-  }
+type Orientation = 'horizontal' | 'vertical';
+type Alignment = 'start' | 'center' | 'end';
 
-  constructor() {
-    super();
-    this.attachShadow({ mode: 'open' });
-    this.render();
-  }
+class ButtonGroupComponent extends DarkglowElement {
+  static styles = styles;
 
-/*  attributeChangedCallback(name: string, oldValue: string, newValue: string) {
-    if (oldValue !== newValue) {
-      this.render();
-    }
-  }*/
+  @property({ type: String, reflect: true })
+  orientation: Orientation = 'horizontal';
 
-  get orientation() {
-    return this.getAttribute('orientation') || 'horizontal';
-  }
+  @property({ type: String, reflect: true })
+  align: Alignment = 'center';
 
-  get align() {
-    return this.getAttribute('align') || 'center';
+  private getAlignmentStyles() {
+    const value =
+      this.align === 'start'
+        ? 'flex-start'
+        : this.align === 'end'
+          ? 'flex-end'
+          : 'center';
+
+    return this.orientation === 'vertical'
+      ? { flexDirection: 'column', alignItems: value }
+      : { flexDirection: 'row', justifyContent: value };
   }
 
   render() {
-    if (!this.shadowRoot) return;
-
-    // Determine alignment based on orientation
-    let justifyContent; // Default
-    let alignItems;
-
-    switch (this.align) {
-      case 'start':
-        justifyContent = 'flex-start';
-        alignItems = 'flex-start';
-        break;
-      case 'end':
-        justifyContent = 'flex-end';
-        alignItems = 'flex-end';
-        break;
-      case 'center':
-      default:
-        justifyContent = 'center';
-        alignItems = 'center';
-        break;
-    }
-    console.log(alignItems)
-
-    // Dynamic styles that depend on component properties
-    const dynamicStyles = `
-      .button-group {
-        flex-direction: ${this.orientation === 'vertical' ? 'column' : 'row'};
-        ${this.orientation === 'vertical' 
-          ? `align-items: ${justifyContent};` 
-          : `justify-content: ${justifyContent};`}
-      }
-    `;
-
-    this.shadowRoot.innerHTML = `
-      <style>
-        ${styles}
-        ${dynamicStyles}
-      </style>
-      <div class="button-group ${this.orientation}">
+    return html`
+      <div
+        class="button-group ${this.orientation}"
+        style=${styleMap(this.getAlignmentStyles())}
+      >
         <slot></slot>
       </div>
     `;

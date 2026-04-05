@@ -1,0 +1,47 @@
+@font-face {
+  font-family: "Orbitron";
+  src: url("/fonts/Orbitron/Orbitron-VariableFont_wght.ttf");
+}
+
+@font-face {
+  font-family: "Raleway";
+  src: url("/fonts/Raleway/Raleway-VariableFont_wght.ttf");
+}
+
+:root {
+  --color-black: #0d0221;
+  --color-dark: #1a0b2e;
+  --color-darker: #241734;
+  --color-gray-dark: #2d1b42;
+  --color-white: #ffffff;
+  --color-white-muted: rgba(255, 255, 255, 0.87);
+  --color-gray-light: #cccccc;
+
+  --color-primary: #ff00ff;
+  --color-primary-glow: 0 0 5px #ff00ff, 0 0 10px #ff00ff, 0 0 15px #ff00ff;
+  --color-secondary: #00ffff;
+  --color-secondary-glow: 0 0 5px #00ffff, 0 0 10px #00ffff, 0 0 15px #00ffff;
+  --color-danger: #ff2b6d;
+  --color-danger-glow: 0 0 5px #ff2b6d, 0 0 10px #ff2b6d, 0 0 15px #ff2b6d;
+  --color-accent: #f9c80e;
+  --color-accent-glow: 0 0 5px #f9c80e, 0 0 10px #f9c80e, 0 0 15px #f9c80e;
+
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+
+  --border-radius: 8px;
+
+  --shadow-sm: 0 4px 8px rgba(255, 0, 255, 0.2);
+  --shadow-md: 0 4px 12px rgba(255, 0, 255, 0.3);
+  --shadow-lg: 0 8px 16px rgba(255, 0, 255, 0.4);
+  --shadow-xl: 0 12px 24px rgba(255, 0, 255, 0.5);
+  --shadow-up: 0 -2px 4px rgba(255, 0, 255, 0.3);
+
+  font-family: "Raleway", Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-weight: 300;
+  color: var(--color-white-muted);
+  background-color: var(--color-black);
+  text-align: center;
+}

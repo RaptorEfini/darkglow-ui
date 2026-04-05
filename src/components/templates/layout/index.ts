@@ -1,40 +1,27 @@
-import styles from './styles.css?inline';
+import { html } from 'lit';
+import { property } from 'lit/decorators.js';
+import { DarkglowElement } from '@base/DarkglowElement';
+import styles from './styles';
 
-class LayoutComponent extends HTMLElement {
-  static get observedAttributes() {
-    return ['title'];
-  }
+class LayoutComponent extends DarkglowElement {
+  static styles = styles;
 
-  constructor() {
-    super();
-    this.attachShadow({ mode: 'open' });
-    this.render();
-  }
+  @property({ type: String, attribute: 'title', reflect: true })
+  pageTitle = 'Darkglow UI';
 
-  /*
-  attributeChangedCallback(name: string, oldValue: string, newValue: string) {
-    if (oldValue !== newValue) {
-      if (name === 'title') {
-        // Update the document title
-        document.title = newValue || 'Darkglow UI';
-        // Remove the title attribute to prevent tooltip on hover
-        this.removeAttribute('title');
-      } else {
-        this.render();
-      }
+  protected updated(changedProperties: Map<string, unknown>) {
+    if (changedProperties.has('pageTitle')) {
+      document.title = this.pageTitle || 'Darkglow UI';
     }
   }
-  */
 
-  get title() {
-    return this.getAttribute('title') || 'Darkglow UI';
+  connectedCallback() {
+    super.connectedCallback();
+    document.title = this.pageTitle || 'Darkglow UI';
   }
 
   render() {
-    if (!this.shadowRoot) return;
-
-    this.shadowRoot.innerHTML = `
-      <style>${styles}</style>
+    return html`
       <header>
         <div class="header-content">
           <slot name="header"></slot>
@@ -49,12 +36,6 @@ class LayoutComponent extends HTMLElement {
         </div>
       </footer>
     `;
-
-    // Update the document title
-    document.title = this.title;
-
-    // Remove the title attribute from the host element to prevent tooltip on hover
-    this.removeAttribute('title');
   }
 }
 

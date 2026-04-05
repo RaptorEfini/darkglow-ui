@@ -1,20 +1,20 @@
 // Import components
-import ButtonComponent from './atoms/button';
-import ButtonGroupComponent from './atoms/button-group';
-import CardComponent from './atoms/card';
-import ContainerComponent from './atoms/container';
-import FaderComponent from './atoms/fader';
-import GridComponent from './atoms/grid';
-import KnobComponent from './atoms/knob';
-import PadComponent from './atoms/pad';
-import TypographyComponent from './atoms/typography';
-import LayoutComponent from './templates/layout';
+import ButtonComponent from '@atoms/button';
+import ButtonGroupComponent from '@atoms/button-group';
+import CardComponent from '@atoms/card';
+import ContainerComponent from '@atoms/container';
+import FaderComponent from '@atoms/fader';
+import GridComponent from '@atoms/grid';
+import KnobComponent from '@atoms/knob';
+import PadComponent from '@atoms/pad';
+import TypographyComponent from '@atoms/typography';
+import LayoutComponent from '@templates/layout';
 
 // Apc40
-import { Apc40ClipLaunch } from './molecules/apc40-clip-launch';
+import { Apc40ClipLaunch } from '@molecules/apc40-clip-launch';
 
 // Import registry
-import { componentRegistry, ComponentDefinition } from './registry';
+import { componentRegistry, ComponentDefinition } from '@components/registry';
 
 // Export components
 export { 

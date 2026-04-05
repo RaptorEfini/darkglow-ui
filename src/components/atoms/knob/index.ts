@@ -1,240 +1,183 @@
-import styles from './styles.css?inline';
+import { css, html } from 'lit';
+import { styleMap } from 'lit/directives/style-map.js';
+import { property } from 'lit/decorators.js';
+import { DarkglowElement } from '@base/DarkglowElement';
+import styles from './styles';
 
-class KnobComponent extends HTMLElement {
-  static get observedAttributes() {
-    return ['value', 'min', 'max', 'disabled', 'variant'];
-  }
+class KnobComponent extends DarkglowElement {
+  static styles = [
+    styles,
+    css`
+      .knob {
+        cursor: pointer;
+      }
 
-  private _value: number = 50;
-  private _min: number = 0;
-  private _max: number = 100;
-  private _isDragging: boolean = false;
-  private _startY: number = 0;
-  private _knobElement: HTMLElement | null = null;
-  private _indicatorElement: HTMLElement | null = null;
-  private _valueDisplay: HTMLElement | null = null;
-  private _sensitivity: number = 1;
+      .knob.disabled {
+        cursor: not-allowed;
+      }
+    `
+  ];
 
-  constructor() {
-    super();
-    this.attachShadow({ mode: 'open' });
-    this.render();
-  }
+  @property({ type: Number, reflect: true })
+  value = 50;
+
+  @property({ type: Number, reflect: true })
+  min = 0;
+
+  @property({ type: Number, reflect: true })
+  max = 100;
+
+  @property({ type: Boolean, reflect: true })
+  disabled = false;
+
+  @property({ type: String, reflect: true })
+  variant = 'primary';
+
+  @property({ type: Number })
+  sensitivity = 1;
+
+  private isDragging = false;
+  private startY = 0;
 
   connectedCallback() {
-    this._knobElement = this.shadowRoot?.querySelector('.knob') as HTMLElement;
-    this._indicatorElement = this.shadowRoot?.querySelector('.indicator') as HTMLElement;
-    this._valueDisplay = this.shadowRoot?.querySelector('.value-display') as HTMLElement;
-
-    this.addEventListener('mousedown', this.handleMouseDown);
+    super.connectedCallback();
     document.addEventListener('mousemove', this.handleMouseMove);
     document.addEventListener('mouseup', this.handleMouseUp);
-    this.addEventListener('wheel', this.handleWheel);
-
-    this.updateKnobPosition();
   }
 
   disconnectedCallback() {
-    this.removeEventListener('mousedown', this.handleMouseDown);
     document.removeEventListener('mousemove', this.handleMouseMove);
     document.removeEventListener('mouseup', this.handleMouseUp);
-    this.removeEventListener('wheel', this.handleWheel);
+    super.disconnectedCallback();
   }
 
-  attributeChangedCallback(name: string, oldValue: string, newValue: string) {
-    if (oldValue === newValue) return;
+  private clamp(nextValue: number) {
+    return Math.min(Math.max(nextValue, this.min), this.max);
+  }
 
-    switch (name) {
-      case 'value':
-        // Use isNaN to check if the value is not a number, instead of using || which treats 0 as falsy
-        this._value = isNaN(Number(newValue)) ? 50 : Number(newValue);
-        this.updateKnobPosition();
-        break;
-      case 'min':
-        this._min = isNaN(Number(newValue)) ? 0 : Number(newValue);
-        this.updateKnobPosition();
-        break;
-      case 'max':
-        this._max = isNaN(Number(newValue)) ? 100 : Number(newValue);
-        this.updateKnobPosition();
-        break;
-      case 'disabled':
-      case 'variant':
-        this.render();
-        break;
+  private updateValue(nextValue: number, eventName: 'input' | 'change') {
+    const clamped = this.clamp(nextValue);
+    if (clamped === this.value) {
+      return;
     }
+    this.value = clamped;
+    this.emit(eventName, { value: this.value });
   }
 
-  get value() {
-    return this._value;
-  }
-
-  set value(val: number) {
-    const newValue = Math.min(Math.max(val, this._min), this._max);
-    if (newValue !== this._value) {
-      this._value = newValue;
-      this.setAttribute('value', String(newValue));
-      this.updateKnobPosition();
-      this.dispatchEvent(new CustomEvent('change', {
-        bubbles: true,
-        composed: true,
-        detail: { value: this._value }
-      }));
+  private commitValue(nextValue: number) {
+    const clamped = this.clamp(nextValue);
+    if (clamped !== this.value) {
+      this.value = clamped;
     }
+    this.emit('change', { value: this.value });
   }
 
-  get min() {
-    return this._min;
-  }
-
-  set min(val: number) {
-    this._min = val;
-    this.setAttribute('min', String(val));
-  }
-
-  get max() {
-    return this._max;
-  }
-
-  set max(val: number) {
-    this._max = val;
-    this.setAttribute('max', String(val));
-  }
-
-  get disabled() {
-    return this.hasAttribute('disabled');
-  }
-
-  get variant() {
-    return this.getAttribute('variant') || 'primary';
-  }
-
-  handleMouseDown = (e: MouseEvent) => {
+  private handleMouseDown = (e: MouseEvent) => {
     if (this.disabled) return;
-
-    this._isDragging = true;
-    this._startY = e.clientY;
-    this._knobElement?.classList.add('active');
-
-    // Prevent text selection during dragging
+    this.isDragging = true;
+    this.startY = e.clientY;
+    this.requestUpdate();
     e.preventDefault();
-  }
+  };
 
-  handleMouseMove = (e: MouseEvent) => {
-    if (!this._isDragging) return;
+  private handleMouseMove = (e: MouseEvent) => {
+    if (!this.isDragging) return;
 
-    const deltaY = this._startY - e.clientY;
-    const range = this._max - this._min;
-    const valueChange = deltaY * this._sensitivity * (range / 100);
+    const deltaY = this.startY - e.clientY;
+    const range = this.max - this.min;
+    const valueChange = deltaY * this.sensitivity * (range / 100);
 
-    this.value = this._value + valueChange;
-    this._startY = e.clientY;
-  }
+    this.startY = e.clientY;
+    this.updateValue(this.value + valueChange, 'input');
+  };
 
-  handleMouseUp = () => {
-    if (this._isDragging) {
-      this._isDragging = false;
-      this._knobElement?.classList.remove('active');
-    }
-  }
+  private handleMouseUp = () => {
+    if (!this.isDragging) return;
+    this.isDragging = false;
+    this.requestUpdate();
+    this.emit('change', { value: this.value });
+  };
 
-  handleWheel = (e: WheelEvent) => {
+  private handleWheel = (e: WheelEvent) => {
     if (this.disabled) return;
-
     e.preventDefault();
     const direction = e.deltaY > 0 ? -1 : 1;
-    const step = (this._max - this._min) / 100;
-    this.value = this._value + (direction * step * 5);
+    const step = (this.max - this.min) / 100;
+    const nextValue = this.value + direction * step * 5;
+    this.updateValue(nextValue, 'input');
+    this.commitValue(nextValue);
+  };
+
+  private handleKeyDown = (e: KeyboardEvent) => {
+    if (this.disabled) return;
+
+    const step = (this.max - this.min) / 100 || 1;
+    if (e.key === 'ArrowUp' || e.key === 'ArrowRight') {
+      e.preventDefault();
+      const nextValue = this.value + step * 5;
+      this.updateValue(nextValue, 'input');
+      this.commitValue(nextValue);
+    } else if (e.key === 'ArrowDown' || e.key === 'ArrowLeft') {
+      e.preventDefault();
+      const nextValue = this.value - step * 5;
+      this.updateValue(nextValue, 'input');
+      this.commitValue(nextValue);
+    }
+  };
+
+  private getRotation() {
+    const percentage = ((this.value - this.min) / (this.max - this.min || 1)) * 100;
+    return 225 + (percentage * 285) / 100;
   }
 
-  updateKnobPosition() {
-    if (!this._indicatorElement || !this._valueDisplay) return;
-
-    const percentage = ((this._value - this._min) / (this._max - this._min)) * 100;
-    // Adjust rotation to start at 225 degrees (7 o'clock) and end at 150 degrees (5 o'clock)
-    // This means a 285 degree rotation range going clockwise (passing through 0/360)
-    const startAngle = 225;
-    const rotationRange = 285;
-    const degrees = startAngle + (percentage * rotationRange / 100);
-
-    this._indicatorElement.style.transform = `rotate(${degrees}deg)`;
-    this._valueDisplay.textContent = Math.round(this._value).toString();
-  }
-
-  render() {
-    if (!this.shadowRoot) return;
-
-    // Dynamic styles that depend on component properties
-    const dynamicStyles = `
-      .knob {
-        cursor: ${this.disabled ? 'not-allowed' : 'pointer'};
-      }
-    `;
-
-    // Create tick marks
-    let ticksHtml = '<div class="ticks">';
-
-    // Add special limit markers at 7 o'clock (225 degrees) and 5 o'clock (150 degrees)
-    const startAngle = 225; // 7 o'clock position
-    const endAngle = 150;   // 5 o'clock position
-
+  private renderTicks() {
+    const radius = 'calc(var(--knob-size) / 2 - 4px)';
+    const ticks = [];
     for (let i = 0; i < 28; i++) {
       const angle = i * (270 / 27);
       const isMajor = i % 9 === 0;
-
-      // Check if this tick is at or very close to one of our limit positions
-      const isStartLimit = Math.abs(angle - startAngle) < 5;
-      const isEndLimit = Math.abs(angle - endAngle) < 5;
-      const isLimitMarker = isStartLimit || isEndLimit;
-
-      const radius = 'calc(var(--knob-size) / 2 - 4px)'; // Smaller to stay within the knob border
-
-      // Apply appropriate classes based on whether it's a major tick or limit marker
-      const tickClass = isLimitMarker ? 'limit-marker' : (isMajor ? 'major' : '');
-
-      ticksHtml += `
-        <div class="tick ${tickClass}" 
-             style="transform: rotate(${angle}deg) translateY(-${radius});">
-        </div>
-      `;
+      const isLimitMarker = Math.abs(angle - 225) < 5 || Math.abs(angle - 150) < 5;
+      const tickClass = isLimitMarker ? 'limit-marker' : isMajor ? 'major' : '';
+      ticks.push(html`<div class="tick ${tickClass}" style=${styleMap({
+        transform: `rotate(${angle}deg) translateY(-${radius})`
+      })}></div>`);
     }
 
-    // Add exact limit markers at precise angles if needed
-    ticksHtml += `
-      <div class="tick limit-marker" 
-           style="transform: rotate(${startAngle}deg) translateY(-calc(var(--knob-size) / 2 - 4px));">
-      </div>
-      <div class="tick limit-marker" 
-           style="transform: rotate(${endAngle}deg) translateY(-calc(var(--knob-size) / 2 - 4px));">
-      </div>
-    `;
+    ticks.push(html`<div class="tick limit-marker" style=${styleMap({
+      transform: `rotate(225deg) translateY(-${radius})`
+    })}></div>`);
+    ticks.push(html`<div class="tick limit-marker" style=${styleMap({
+      transform: `rotate(150deg) translateY(-${radius})`
+    })}></div>`);
 
-    ticksHtml += '</div>';
+    return ticks;
+  }
 
-    this.shadowRoot.innerHTML = `
-      <style>
-        ${styles}
-        ${dynamicStyles}
-      </style>
+  render() {
+    return html`
       <div class="knob-container">
         <div class="knob-wrapper">
-          <div class="knob ${this.variant} ${this.disabled ? 'disabled' : ''}">
-            ${ticksHtml}
-            <div class="indicator"></div>
+          <div
+            class="knob ${this.variant} ${this.disabled ? 'disabled' : ''} ${this.isDragging ? 'active' : ''}"
+            role="slider"
+            tabindex=${this.disabled ? -1 : 0}
+            aria-valuemin=${this.min}
+            aria-valuemax=${this.max}
+            aria-valuenow=${Math.round(this.value)}
+            @mousedown=${this.handleMouseDown}
+            @wheel=${this.handleWheel}
+            @keydown=${this.handleKeyDown}
+          >
+            <div class="ticks">${this.renderTicks()}</div>
+            <div class="indicator" style=${styleMap({
+              transform: `translateX(-50%) rotate(${this.getRotation()}deg)`
+            })}></div>
           </div>
         </div>
-        <div class="value-display">${Math.round(this._value).toString()}</div>
+        <div class="value-display">${Math.round(this.value)}</div>
         <div class="label"><slot></slot></div>
       </div>
     `;
-
-    // Re-query elements after render
-    this._knobElement = this.shadowRoot.querySelector('.knob');
-    this._indicatorElement = this.shadowRoot.querySelector('.indicator');
-    this._valueDisplay = this.shadowRoot.querySelector('.value-display');
-
-    // Update knob position
-    this.updateKnobPosition();
   }
 }
 

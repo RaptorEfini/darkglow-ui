@@ -1,105 +1,69 @@
-# TypeScript Implementation Improvements
+# TypeScript Implementation Notes
 
-This document outlines the improvements made to the TypeScript implementation in the Darkglow UI project to make it more scalable and maintainable.
+This document summarizes the current TypeScript conventions in Darkglow UI after the migration to `Lit`.
 
-## Key Improvements
+## Current model
 
-### 1. Base Component Class
+- Components are implemented with `LitElement`
+- Shared base class: `src/components/base/DarkglowElement.ts`
+- Decorators use the legacy TypeScript mode:
+  - `experimentalDecorators: true`
+  - `useDefineForClassFields: false`
 
-A `BaseComponent` class was created to provide common functionality for all components:
+## Shared typing
 
-- Standardized shadow DOM initialization
-- Helper methods for attribute handling
-- Type-safe event dispatching
-- Abstract render method to enforce implementation
+Common types live in `src/types/index.ts`:
 
-This reduces code duplication and ensures consistent component behavior.
+- `ComponentVariant`
+- `ComponentSize`
+- `ComponentOrientation`
+- `ComponentAlignment`
+- `BaseComponentProps`
 
-### 2. Centralized Type System
+The project still uses these shared types mainly as vocabulary for the design system and component contracts.
 
-A central type system was implemented:
+## Registry
 
-- Created a `/src/types` directory for shared types
-- Defined common types like `ComponentVariant`, `ComponentSize`, etc.
-- Implemented base interfaces like `BaseComponentProps`
-- Added event handler type definitions
+The public component registry remains centralized in `src/components/registry.ts`.
 
-This ensures type consistency across the project and makes it easier to maintain and extend types.
+It provides:
 
-### 3. Component Registry
+- a single place to declare the catalog
+- prefixed registration
+- duplicate-define protection
 
-A new component registry system was implemented:
+## Path aliases
 
-- Singleton pattern for managing component registration
-- Type-safe component definitions
-- Support for prefixed and non-prefixed components
-- Prevention of duplicate registrations
+Both `tsconfig.json` and `tsconfig.components.json` define aliases such as:
 
-This makes component registration more maintainable and provides a single source of truth for component definitions.
+- `@`
+- `@components`
+- `@atoms`
+- `@molecules`
+- `@templates`
+- `@base`
+- `@types`
 
-### 4. Path Aliases
+## Recommended pattern for components
 
-Path aliases were added to both `tsconfig.json` and `tsconfig.components.json`:
+```ts
+import { html } from 'lit';
+import { property } from 'lit/decorators.js';
+import { DarkglowElement } from '@base/DarkglowElement';
 
-- `@/*` for src directory
-- `@components/*` for components directory
-- `@atoms/*`, `@molecules/*`, etc. for component categories
-- `@types/*` for type definitions
+class MyComponent extends DarkglowElement {
+  @property({ type: String, reflect: true })
+  variant = 'primary';
 
-This makes imports more readable and maintainable, and reduces the need for relative paths.
-
-### 5. Component-Specific Types
-
-Each component now has its own types file with:
-
-- Properly documented interfaces
-- Default values
-- Event type definitions
-
-This improves type safety and makes component APIs more discoverable.
-
-## Usage Examples
-
-### Using the Base Component
-
-```typescript
-import { BaseComponent } from '@base/BaseComponent';
-
-class MyComponent extends BaseComponent {
-  // Implementation
+  render() {
+    return html`<slot></slot>`;
+  }
 }
 ```
 
-### Using Shared Types
+## Practical benefits
 
-```typescript
-import { ComponentVariant, ComponentSize } from '@/types';
-
-interface MyComponentProps {
-  variant: ComponentVariant;
-  size: ComponentSize;
-}
-```
-
-### Using the Component Registry
-
-```typescript
-import { componentRegistry } from '@components/registry';
-
-// Register a component
-componentRegistry.register('myComponent', {
-  component: MyComponent,
-  tagName: 'my-component'
-});
-
-// Define all components
-componentRegistry.defineAll('my-prefix');
-```
-
-## Benefits
-
-1. **Improved Type Safety**: Better type definitions reduce runtime errors
-2. **Reduced Duplication**: Shared code and types reduce maintenance burden
-3. **Better Developer Experience**: Path aliases and consistent patterns improve productivity
-4. **Scalability**: The new structure supports adding more components without complexity
-5. **Maintainability**: Clear separation of concerns makes the codebase easier to maintain
+1. Better consistency across the component catalog
+2. Less manual DOM synchronization
+3. Simpler attribute/property handling
+4. A clearer path to documentation and tooling

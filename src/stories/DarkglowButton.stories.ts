@@ -19,3 +19,11 @@ export const Secondary: Story = {
 export const Danger: Story = {
   render: () => '<darkglow-button variant="danger">Danger</darkglow-button>'
 };
+
+export const Ghost: Story = {
+  render: () => '<darkglow-button variant="ghost">Ghost</darkglow-button>'
+};
+
+export const Disabled: Story = {
+  render: () => '<darkglow-button disabled>Disabled</darkglow-button>'
+};

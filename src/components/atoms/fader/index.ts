@@ -1,297 +1,228 @@
-import styles from './styles.css?inline';
-import { BaseComponent } from '../../base/BaseComponent';
-import { DEFAULT_FADER_PROPS, FaderProps } from './types';
+import { html } from 'lit';
+import { styleMap } from 'lit/directives/style-map.js';
+import { property } from 'lit/decorators.js';
+import { DarkglowElement } from '@base/DarkglowElement';
+import styles from './styles';
 
-class FaderComponent extends BaseComponent {
-  static get observedAttributes() {
-    return ['value', 'min', 'max', 'disabled', 'variant', 'orientation'];
-  }
+type Orientation = 'horizontal' | 'vertical';
 
-  private _props: FaderProps = { ...DEFAULT_FADER_PROPS };
-  private _isDragging: boolean = false;
-  private _startY: number = 0;
-  private _startX: number = 0;
-  private _faderElement: HTMLElement | null = null;
-  private _handleElement: HTMLElement | null = null;
-  private _valueDisplay: HTMLElement | null = null;
+class FaderComponent extends DarkglowElement {
+  static styles = styles;
 
-  constructor() {
-    super();
-  }
+  @property({ type: Number, reflect: true })
+  value = 50;
+
+  @property({ type: Number, reflect: true })
+  min = 0;
+
+  @property({ type: Number, reflect: true })
+  max = 100;
+
+  @property({ type: Boolean, reflect: true })
+  disabled = false;
+
+  @property({ type: String, reflect: true })
+  variant = 'primary';
+
+  @property({ type: String, reflect: true })
+  orientation: Orientation = 'vertical';
+
+  @property({ type: Number })
+  sensitivity = 1;
+
+  private isDragging = false;
+  private startY = 0;
+  private startX = 0;
 
   connectedCallback() {
-    this._faderElement = this.shadowRoot?.querySelector('.fader-track') as HTMLElement;
-    this._handleElement = this.shadowRoot?.querySelector('.fader-handle') as HTMLElement;
-    this._valueDisplay = this.shadowRoot?.querySelector('.value-display') as HTMLElement;
-
-    this._handleElement?.addEventListener('mousedown', this.handleMouseDown);
+    super.connectedCallback();
     document.addEventListener('mousemove', this.handleMouseMove);
     document.addEventListener('mouseup', this.handleMouseUp);
-    this.addEventListener('wheel', this.handleWheel);
-
-    this.updateFaderPosition();
   }
 
   disconnectedCallback() {
-    this._handleElement?.removeEventListener('mousedown', this.handleMouseDown);
     document.removeEventListener('mousemove', this.handleMouseMove);
     document.removeEventListener('mouseup', this.handleMouseUp);
-    this.removeEventListener('wheel', this.handleWheel);
+    super.disconnectedCallback();
   }
 
-  attributeChangedCallback(name: string, oldValue: string, newValue: string) {
-    if (oldValue === newValue) return;
+  private clamp(nextValue: number) {
+    return Math.min(Math.max(nextValue, this.min), this.max);
+  }
 
-    switch (name) {
-      case 'value':
-        this._props.value = isNaN(Number(newValue)) ? DEFAULT_FADER_PROPS.value : Number(newValue);
-        this.updateFaderPosition();
-        break;
-      case 'min':
-        this._props.min = isNaN(Number(newValue)) ? DEFAULT_FADER_PROPS.min : Number(newValue);
-        this.updateFaderPosition();
-        break;
-      case 'max':
-        this._props.max = isNaN(Number(newValue)) ? DEFAULT_FADER_PROPS.max : Number(newValue);
-        this.updateFaderPosition();
-        break;
-      case 'disabled':
-        this._props.disabled = this.getBooleanAttribute('disabled');
-        this.render();
-        break;
-      case 'variant':
-        this._props.variant = this.getStringAttribute('variant', DEFAULT_FADER_PROPS.variant) as FaderProps['variant'];
-        this.render();
-        break;
-      case 'orientation':
-        this._props.orientation = this.getStringAttribute('orientation', DEFAULT_FADER_PROPS.orientation) as FaderProps['orientation'];
-        this.render();
-        break;
+  private updateValue(nextValue: number, eventName: 'input' | 'change') {
+    const clamped = this.clamp(nextValue);
+    if (clamped === this.value) {
+      return;
     }
+    this.value = clamped;
+    this.emit(eventName, { value: this.value });
   }
 
-  get value(): number {
-    return this._props.value;
-  }
-
-  set value(val: number) {
-    const newValue = Math.min(Math.max(val, this._props.min), this._props.max);
-    if (newValue !== this._props.value) {
-      this._props.value = newValue;
-      this.setAttribute('value', String(newValue));
-      this.updateFaderPosition();
-      this.dispatchCustomEvent('change', { value: this._props.value });
+  private commitValue(nextValue: number) {
+    const clamped = this.clamp(nextValue);
+    if (clamped !== this.value) {
+      this.value = clamped;
     }
+    this.emit('change', { value: this.value });
   }
 
-  get min(): number {
-    return this._props.min;
-  }
-
-  set min(val: number) {
-    this._props.min = val;
-    this.setAttribute('min', String(val));
-  }
-
-  get max(): number {
-    return this._props.max;
-  }
-
-  set max(val: number) {
-    this._props.max = val;
-    this.setAttribute('max', String(val));
-  }
-
-  get disabled(): boolean {
-    return this._props.disabled;
-  }
-
-  get variant(): FaderProps['variant'] {
-    return this._props.variant;
-  }
-
-  get orientation(): FaderProps['orientation'] {
-    return this._props.orientation;
-  }
-  
-  get sensitivity(): number {
-    return this._props.sensitivity;
-  }
-  
-  set sensitivity(val: number) {
-    this._props.sensitivity = val;
-  }
-
-  handleMouseDown = (e: MouseEvent) => {
+  private handleMouseDown = (e: MouseEvent) => {
     if (this.disabled) return;
-
-    this._isDragging = true;
-    this._startY = e.clientY;
-    this._startX = e.clientX;
-    this._handleElement?.classList.add('active');
-
-    // Prevent text selection during dragging
+    this.isDragging = true;
+    this.startY = e.clientY;
+    this.startX = e.clientX;
+    this.requestUpdate();
     e.preventDefault();
-  }
+  };
 
-  handleMouseMove = (e: MouseEvent) => {
-    if (!this._isDragging) return;
-
-    const range = this._props.max - this._props.min;
-    let valueChange;
+  private handleMouseMove = (e: MouseEvent) => {
+    if (!this.isDragging) return;
+    const range = this.max - this.min;
+    let delta = 0;
 
     if (this.orientation === 'horizontal') {
-      const deltaX = e.clientX - this._startX;
-      valueChange = deltaX * this._props.sensitivity * (range / 100);
-      this._startX = e.clientX;
+      delta = e.clientX - this.startX;
+      this.startX = e.clientX;
     } else {
-      const deltaY = this._startY - e.clientY;
-      valueChange = deltaY * this._props.sensitivity * (range / 100);
-      this._startY = e.clientY;
+      delta = this.startY - e.clientY;
+      this.startY = e.clientY;
     }
 
-    this.value = this._props.value + valueChange;
-  }
+    const nextValue = this.value + delta * this.sensitivity * (range / 100);
+    this.updateValue(nextValue, 'input');
+  };
 
-  handleMouseUp = () => {
-    if (this._isDragging) {
-      this._isDragging = false;
-      this._handleElement?.classList.remove('active');
-    }
-  }
+  private handleMouseUp = () => {
+    if (!this.isDragging) return;
+    this.isDragging = false;
+    this.requestUpdate();
+    this.emit('change', { value: this.value });
+  };
 
-  handleWheel = (e: WheelEvent) => {
+  private handleWheel = (e: WheelEvent) => {
     if (this.disabled) return;
-
     e.preventDefault();
-    // For horizontal faders, we invert the direction to match the visual representation
-    const direction = this.orientation === 'horizontal' 
-      ? (e.deltaY > 0 ? 1 : -1) 
+    const direction = this.orientation === 'horizontal'
+      ? (e.deltaY > 0 ? 1 : -1)
       : (e.deltaY > 0 ? -1 : 1);
-    const step = (this._props.max - this._props.min) / 100;
-    this.value = this._props.value + (direction * step * 5);
+    const step = (this.max - this.min) / 100;
+    const nextValue = this.value + direction * step * 5;
+    this.updateValue(nextValue, 'input');
+    this.commitValue(nextValue);
+  };
+
+  private handleKeyDown = (e: KeyboardEvent) => {
+    if (this.disabled) return;
+    const step = (this.max - this.min) / 100 || 1;
+
+    if (e.key === 'ArrowUp' || e.key === 'ArrowRight') {
+      e.preventDefault();
+      const nextValue = this.value + step * 5;
+      this.updateValue(nextValue, 'input');
+      this.commitValue(nextValue);
+    } else if (e.key === 'ArrowDown' || e.key === 'ArrowLeft') {
+      e.preventDefault();
+      const nextValue = this.value - step * 5;
+      this.updateValue(nextValue, 'input');
+      this.commitValue(nextValue);
+    }
+  };
+
+  private getPercentage() {
+    return ((this.value - this.min) / (this.max - this.min || 1)) * 100;
   }
 
-  updateFaderPosition() {
-    if (!this._handleElement || !this._valueDisplay) return;
+  private getHostStyles() {
+    const isHorizontal = this.orientation === 'horizontal';
+    return {
+      '--fader-width': isHorizontal ? '150px' : '40px',
+      '--fader-height': isHorizontal ? '40px' : '150px',
+      '--fader-color': 'var(--color-darker)',
+      '--handle-color': 'var(--color-darker)',
+      '--indicator-color': 'var(--color-primary)',
+      '--fader-border': 'var(--color-primary)'
+    };
+  }
 
-    const percentage = ((this._props.value - this._props.min) / (this._props.max - this._props.min)) * 100;
+  private getTrackStyles() {
+    const isHorizontal = this.orientation === 'horizontal';
+    return isHorizontal
+      ? { top: '50%', left: '0', transform: 'translateY(-50%)', width: '100%', height: '8px' }
+      : { top: '0', left: '50%', transform: 'translateX(-50%)', width: '8px', height: '100%' };
+  }
 
-    if (this.orientation === 'horizontal') {
-      this._handleElement.style.left = `${percentage}%`;
-      this._handleElement.style.top = '50%';
-      this._handleElement.style.transform = 'translate(-50%, -50%)';
-    } else {
-      // Invert the percentage for vertical fader (0% at bottom, 100% at top)
-      const invertedPercentage = 100 - percentage;
-      this._handleElement.style.top = `${invertedPercentage}%`;
-      this._handleElement.style.left = '50%';
-      this._handleElement.style.transform = 'translateX(-50%)';
-    }
+  private getHandleStyles() {
+    const isHorizontal = this.orientation === 'horizontal';
+    const percentage = this.getPercentage();
 
-    this._valueDisplay.textContent = Math.round(this._props.value).toString();
+    return isHorizontal
+      ? {
+          left: `${percentage}%`,
+          top: '50%',
+          transform: this.isDragging ? 'translate(-50%, -50%) scale(0.95)' : 'translate(-50%, -50%)',
+          width: '16px',
+          height: 'var(--fader-height)'
+        }
+      : {
+          left: '50%',
+          top: `${100 - percentage}%`,
+          transform: this.isDragging ? 'translateX(-50%) scale(0.95)' : 'translateX(-50%)',
+          width: 'var(--fader-width)',
+          height: '16px'
+        };
+  }
+
+  private renderTicks() {
+    const isHorizontal = this.orientation === 'horizontal';
+    return Array.from({ length: 11 }, (_, i) => {
+      const position = i * 10;
+      const isMajor = i % 2 === 0;
+      return html`<div
+        class="tick ${isMajor ? 'major' : ''}"
+        style=${styleMap(
+          isHorizontal
+            ? {
+                left: `${position}%`,
+                width: '2px',
+                height: isMajor ? '10px' : '6px',
+                top: 'calc(50% - 10px)'
+              }
+            : {
+                top: `${position}%`,
+                width: isMajor ? '10px' : '6px',
+                height: '2px',
+                left: 'calc(50% - 10px)'
+              }
+        )}
+      ></div>`;
+    });
   }
 
   render() {
-    if (!this.shadowRoot) return;
-
-    const isHorizontal = this.orientation === 'horizontal';
-
-    // Dynamic styles that depend on component properties
-    const dynamicStyles = `
-      :host {
-        --fader-width: ${isHorizontal ? '150px' : '40px'};
-        --fader-height: ${isHorizontal ? '40px' : '150px'};
-        --fader-color: var(--color-darker);
-        --handle-color: var(--color-darker);
-        --indicator-color: var(--color-primary);
-        --fader-border: var(--color-primary);
-      }
-
-      .fader-container {
-        flex-direction: ${isHorizontal ? 'column' : 'column'};
-        width: var(--fader-width);
-      }
-
-      .fader-wrapper {
-        width: var(--fader-width);
-        height: var(--fader-height);
-        margin: ${isHorizontal ? '0 0 10px 0' : '10px 0'};
-      }
-
-      .fader-track {
-        ${isHorizontal ? 'top: 50%; left: 0; transform: translateY(-50%); width: 100%; height: 8px;' : 'top: 0; left: 50%; transform: translateX(-50%); width: 8px; height: 100%;'}
-      }
-
-      .fader-track::before {
-        background: ${isHorizontal ? 'linear-gradient(to right, rgba(255,255,255,0.1) 0%, transparent 50%)' : 'linear-gradient(to bottom, rgba(255,255,255,0.1) 0%, transparent 50%)'};
-      }
-
-      .fader-handle {
-        ${isHorizontal ? 'left: 0; top: 50%; transform: translate(-50%, -50%);' : 'left: 50%; top: 0; transform: translateX(-50%);'}
-        width: ${isHorizontal ? '16px' : 'var(--fader-width)'};
-        height: ${isHorizontal ? 'var(--fader-height)' : '16px'};
-        cursor: ${this.disabled ? 'not-allowed' : (isHorizontal ? 'ew-resize' : 'ns-resize')};
-      }
-
-      .fader-handle.active {
-        transform: ${isHorizontal ? 'translate(-50%, -50%) scale(0.95)' : 'translateX(-50%) scale(0.95)'};
-      }
-
-      .tick {
-        ${isHorizontal ? 'width: 2px; height: 6px; top: calc(50% - 10px);' : 'width: 6px; height: 2px; left: calc(50% - 10px);'}
-      }
-
-      .tick.major {
-        ${isHorizontal ? 'width: 2px; height: 10px;' : 'width: 10px; height: 2px;'}
-      }
-    `;
-
-    // Create tick marks
-    let ticksHtml = '<div class="ticks">';
-    for (let i = 0; i <= 10; i++) {
-      const position = i * 10;
-      const isMajor = i % 2 === 0;
-      if (this.orientation === 'horizontal') {
-        ticksHtml += `
-          <div class="tick ${isMajor ? 'major' : ''}" 
-               style="left: ${position}%;">
-          </div>
-        `;
-      } else {
-        ticksHtml += `
-          <div class="tick ${isMajor ? 'major' : ''}" 
-               style="top: ${position}%;">
-          </div>
-        `;
-      }
-    }
-    ticksHtml += '</div>';
-
-    this.shadowRoot.innerHTML = `
-      <style>
-        ${styles}
-        ${dynamicStyles}
-      </style>
-      <div class="fader-container">
+    return html`
+      <div class="fader-container" style=${styleMap(this.getHostStyles())}>
         <div class="fader-wrapper">
-          <div class="fader-track ${this.variant} ${this.disabled ? 'disabled' : ''}">
-            ${ticksHtml}
+          <div class="fader-track ${this.variant} ${this.disabled ? 'disabled' : ''}" style=${styleMap(this.getTrackStyles())}>
+            <div class="ticks">${this.renderTicks()}</div>
           </div>
-          <div class="fader-handle ${this.variant} ${this.disabled ? 'disabled' : ''}"></div>
+          <div
+            class="fader-handle ${this.variant} ${this.disabled ? 'disabled' : ''}"
+            role="slider"
+            tabindex=${this.disabled ? -1 : 0}
+            aria-valuemin=${this.min}
+            aria-valuemax=${this.max}
+            aria-valuenow=${Math.round(this.value)}
+            style=${styleMap(this.getHandleStyles())}
+            @mousedown=${this.handleMouseDown}
+            @wheel=${this.handleWheel}
+            @keydown=${this.handleKeyDown}
+          ></div>
         </div>
-        <div class="value-display">50</div>
+        <div class="value-display">${Math.round(this.value)}</div>
         <div class="label"><slot></slot></div>
       </div>
     `;
-
-    // Re-query elements after render
-    this._faderElement = this.shadowRoot.querySelector('.fader-track');
-    this._handleElement = this.shadowRoot.querySelector('.fader-handle');
-    this._valueDisplay = this.shadowRoot.querySelector('.value-display');
-
-    // Update fader position
-    this.updateFaderPosition();
   }
 }
 

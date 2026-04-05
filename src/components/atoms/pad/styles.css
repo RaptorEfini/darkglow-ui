@@ -19,12 +19,14 @@
   width: var(--pad-size);
   height: var(--pad-size);
   background-color: var(--pad-color);
+  padding: 0;
   border: 2px solid var(--pad-border);
   box-shadow: 0 0 10px var(--pad-border);
   transition: box-shadow 0.3s ease, transform 0.1s ease, background-color 0.2s ease;
   display: flex;
   justify-content: center;
   align-items: center;
+  appearance: none;
 }
 
 .pad::before {
@@ -52,6 +54,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.number[hidden] {
+  display: none;
 }
 
 .label {
